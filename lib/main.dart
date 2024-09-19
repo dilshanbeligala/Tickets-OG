@@ -1,9 +1,10 @@
-import 'package:class_q/features/presentation/views/home/home_barrel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tickets_og/features/presentation/views/home/home_barrel.dart';
 import 'core/services/dependency_injection.dart';
 import 'core/utils/locales/locales.dart';
 import 'core/utils/navigation_routes.dart';

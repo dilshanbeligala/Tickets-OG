@@ -1,14 +1,13 @@
 import 'dart:async';
-import 'package:class_q/features/data/models/request/recover_request.dart';
-import 'package:class_q/features/domain/usecases/auth/recover.dart';
-import 'package:class_q/features/domain/usecases/usecase_barrel.dart';
-import 'package:class_q/features/presentation/views/auth/auth_barrel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tickets_og/features/data/models/request/request_barrel.dart';
+import 'package:tickets_og/features/domain/usecases/usecase_barrel.dart';
+import 'package:tickets_og/features/presentation/views/auth/auth_barrel.dart';
 import '../../../../core/services/service_barrel.dart';
 import '../../../../core/utils/utils_barrel.dart';
 import '../../widgets/widgets_barrel.dart';

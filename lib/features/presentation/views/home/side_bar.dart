@@ -1,8 +1,9 @@
-import 'package:class_q/features/presentation/views/home/home_barrel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tickets_og/features/presentation/views/home/home_barrel.dart';
 import '../../../../core/utils/utils_barrel.dart';
 
 

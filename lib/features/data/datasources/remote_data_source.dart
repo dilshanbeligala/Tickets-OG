@@ -1,5 +1,5 @@
-import 'package:class_q/features/data/models/request/request_barrel.dart';
-import 'package:class_q/features/data/models/response/response_barrel.dart';
+import 'package:tickets_og/features/data/models/request/request_barrel.dart';
+import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 
 abstract class RemoteDataSource {
 

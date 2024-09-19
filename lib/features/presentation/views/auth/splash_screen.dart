@@ -1,10 +1,11 @@
 
-import 'package:class_q/features/presentation/views/auth/auth_barrel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tickets_og/features/presentation/views/auth/auth_barrel.dart';
 import '../../../../../core/utils/utils_barrel.dart';
 import '../../../domain/repository/repository_barrel.dart';
 import '../base_view.dart';

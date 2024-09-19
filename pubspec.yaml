@@ -1,5 +1,5 @@
-name: class_q
-description: "Class Q mobile Application"
+name: tickets_og
+description: "TicketsOG mobile Application"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

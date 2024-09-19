@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'package:class_q/features/domain/usecases/usecase.dart';
-import 'package:class_q/features/presentation/views/auth/auth_barrel.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tickets_og/features/domain/usecases/usecase_barrel.dart';
+import 'package:tickets_og/features/presentation/views/auth/auth_barrel.dart';
 import '../../../../core/services/service_barrel.dart';
 import '../../../../core/utils/utils_barrel.dart';
 import '../../../data/models/request/request_barrel.dart';
@@ -48,39 +47,39 @@ class _LoginViewState extends BaseViewState<LoginView> {
     return Future.value(true);
   }
 
-  Future<void> _signIn() async {
-    if (_formKey.currentState!.validate()) {
-      showProgressBar();
-      final request = LoginRequest(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      final result = await logIn.call(Params([request]));
-      if (!mounted) return;
-      hideProgressBar();
-      result.fold((failure) {
-        handleErrors(failure: failure);
-      }, (user) async {
-        await secureStorage.write(key: 'user', value: user.toString());
-        if (mounted) {
-          user.success==true?
-          Navigator.of(context).pushAndRemoveUntil(
-              PageTransition(child: const HomePage(), type: PageTransitionType.fade),
-                  (route) => false):
-               showCustomBottomSheet(
-                title: LocaleData.loginFailed.getString(context),
-                subtitle:user.message!,
-                alertType: AlertType.SUCCESS,
-                onTapButton: (){
-                Navigator.of(context).pop();
-                },
-                buttonText: LocaleData.ok.getString(context)
-          );
-        }
-      },
-      );
-    }
-  }
+  // Future<void> _signIn() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     showProgressBar();
+  //     final request = LoginRequest(
+  //       email: _emailController.text,
+  //       password: _passwordController.text,
+  //     );
+  //     final result = await logIn.call(Params([request]));
+  //     if (!mounted) return;
+  //     hideProgressBar();
+  //     result.fold((failure) {
+  //       handleErrors(failure: failure);
+  //     }, (user) async {
+  //       await secureStorage.write(key: 'user', value: user.toString());
+  //       if (mounted) {
+  //         user.success==true?
+  //         Navigator.of(context).pushAndRemoveUntil(
+  //             PageTransition(child: const HomePage(), type: PageTransitionType.fade),
+  //                 (route) => false):
+  //              showCustomBottomSheet(
+  //               title: LocaleData.loginFailed.getString(context),
+  //               subtitle:user.message!,
+  //               alertType: AlertType.SUCCESS,
+  //               onTapButton: (){
+  //               Navigator.of(context).pop();
+  //               },
+  //               buttonText: LocaleData.ok.getString(context)
+  //         );
+  //       }
+  //     },
+  //     );
+  //   }
+  // }
 
   @override
   Widget buildView(BuildContext context) {
@@ -209,7 +208,7 @@ class _LoginViewState extends BaseViewState<LoginView> {
                       children: [
                         AppButton(
                           buttonText: LocaleData.login.getString(context),
-                          onTapButton: _signIn,
+                          onTapButton: (){},
                         ),
                       ],
                     ),

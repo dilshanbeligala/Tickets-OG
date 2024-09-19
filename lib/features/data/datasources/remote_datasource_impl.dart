@@ -1,9 +1,10 @@
-import 'package:class_q/core/services/service_barrel.dart';
-import 'package:class_q/features/data/datasources/data_source_barrel.dart';
-import 'package:class_q/features/data/models/request/request_barrel.dart';
-import 'package:class_q/features/data/models/response/response_barrel.dart';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tickets_og/core/services/service_barrel.dart';
+import 'package:tickets_og/features/data/datasources/data_source_barrel.dart';
+import 'package:tickets_og/features/data/models/request/request_barrel.dart';
+import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 
 
 import '../../../core/network/api_helper.dart';

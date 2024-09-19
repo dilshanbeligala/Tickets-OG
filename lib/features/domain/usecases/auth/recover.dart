@@ -1,8 +1,9 @@
-import 'package:class_q/features/data/models/request/request_barrel.dart';
-import 'package:class_q/features/data/models/response/response_barrel.dart';
-import 'package:class_q/features/domain/repository/repository_barrel.dart';
-import 'package:class_q/features/domain/usecases/usecase_barrel.dart';
+
 import 'package:dartz/dartz.dart';
+import 'package:tickets_og/features/data/models/request/request_barrel.dart';
+import 'package:tickets_og/features/data/models/response/response_barrel.dart';
+import 'package:tickets_og/features/domain/repository/repository_barrel.dart';
+import 'package:tickets_og/features/domain/usecases/usecase_barrel.dart';
 import '../../../../error/error_barrel.dart';
 
 

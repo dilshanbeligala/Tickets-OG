@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:class_q/error/error_barrel.dart';
-import 'package:class_q/features/data/models/request/request_barrel.dart';
-import 'package:class_q/features/data/models/response/response_barrel.dart';
 import 'package:dartz/dartz.dart';
+import 'package:tickets_og/error/error_barrel.dart';
+import 'package:tickets_og/features/data/models/request/request_barrel.dart';
+import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 import '../../../core/network/network_barrel.dart';
 import '../../domain/repository/repository.dart';
 import '../datasources/data_source_barrel.dart';

@@ -1,9 +1,8 @@
 
-
-import 'package:class_q/error/error_barrel.dart';
-import 'package:class_q/features/data/models/request/request_barrel.dart';
-import 'package:class_q/features/data/models/response/response_barrel.dart';
 import 'package:dartz/dartz.dart';
+import 'package:tickets_og/error/error_barrel.dart';
+import 'package:tickets_og/features/data/models/request/request_barrel.dart';
+import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 
 
 abstract class Repository {

@@ -1,4 +1,6 @@
-import 'package:class_q/features/data/models/common/common_barrel.dart';
+
+
+import 'package:tickets_og/features/data/models/common/common_barrel.dart';
 
 class RegisterResponse {
   bool? success;
