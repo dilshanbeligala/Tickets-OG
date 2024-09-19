@@ -1,4 +1,4 @@
-package lk.qnicsoftwaresolutions.classq
+package com.ticketsog.ticketsog
 
 import io.flutter.embedding.android.FlutterActivity
 
