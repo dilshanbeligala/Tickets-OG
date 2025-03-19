@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
@@ -17,25 +15,43 @@ class SplashView extends BaseView {
   SplashViewState createState() => SplashViewState();
 }
 
-class SplashViewState extends BaseViewState<SplashView> {
+class SplashViewState extends BaseViewState<SplashView> with SingleTickerProviderStateMixin {
   final Repository _repository = GetIt.I<Repository>();
-
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
 
   @override
   void initState() {
     super.initState();
-    _checkSignInStatus();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(_controller);
+
+    _startFadeOut();
   }
 
-  Future<void> _checkSignInStatus() async {
+  Future<void> _startFadeOut() async {
     await Future.delayed(const Duration(seconds: 2));
-      _navigate(const LoginView());
+    _controller.forward();
+    await Future.delayed(const Duration(seconds: 2));
+    _navigate(const LoginView());
   }
 
   void _navigate(view) {
     Navigator.of(context).pushAndRemoveUntil(
-        PageTransition(child: view, type: PageTransitionType.fade),
-            (route) => false);
+      PageTransition(child: view, type: PageTransitionType.fade),
+          (route) => false,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -45,45 +61,70 @@ class SplashViewState extends BaseViewState<SplashView> {
       backgroundColor: Colors.white,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
-        child: SizedBox(
-          height: 100.h,
-          width: 100.w,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            AnimatedBuilder(
+              animation: _opacityAnimation,
+              builder: (context, child) {
+                return Opacity(
+                  opacity: _opacityAnimation.value,
+                  child: Image.asset(
+                    AppImages.icSplashBg,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
+            ),
+
+            SizedBox(
+              height: 100.h,
+              width: 100.w,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  // Image(
-                  //   image: const AssetImage(AppImages.icLogo),
-                  //   height: 30.w,
-                  // ),
-                ],
-              ),
-              Positioned(
-                bottom: padding.bottom,
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: "Powered by\n",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: AppColors.neutralColor[600],
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: "TicketsOG",
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            color: AppColors.primaryColor[900],
-                            fontWeight: FontWeight.w700,
-                            fontSize: Theme.of(context).textTheme.labelSmall?.fontSize
-                        ),
-                      ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Logo (uncomment if needed)
+                      // Image(
+                      //   image: const AssetImage(AppImages.icLogo),
+                      //   height: 30.w,
+                      // ),
                     ],
                   ),
-                ),
-              )
-            ],
-          ),
+                  Positioned(
+                    bottom: padding.bottom,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "Powered by\n",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.black,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "TicketsOG",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                              color: AppColors.primaryColor[900],
+                              fontWeight: FontWeight.w700,
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.fontSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
