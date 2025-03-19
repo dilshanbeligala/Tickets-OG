@@ -1,3 +1,4 @@
 
-export 'data/switch_option.dart';
+
 export 'user.dart';
+export 'nav_data.dart';

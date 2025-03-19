@@ -54,10 +54,10 @@ class SplashViewState extends BaseViewState<SplashView> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image(
-                    image: const AssetImage(AppImages.icLogo),
-                    height: 30.w,
-                  ),
+                  // Image(
+                  //   image: const AssetImage(AppImages.icLogo),
+                  //   height: 30.w,
+                  // ),
                 ],
               ),
               Positioned(

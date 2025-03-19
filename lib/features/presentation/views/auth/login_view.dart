@@ -2,19 +2,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tickets_og/features/domain/usecases/usecase_barrel.dart';
-import 'package:tickets_og/features/presentation/views/auth/auth_barrel.dart';
+import 'package:tickets_og/features/presentation/views/main/main_barrel.dart';
 import '../../../../core/services/service_barrel.dart';
 import '../../../../core/utils/utils_barrel.dart';
-import '../../../data/models/request/request_barrel.dart';
 import '../../../domain/usecases/auth/login.dart';
 import '../../widgets/widgets_barrel.dart';
 import '../base_view.dart';
-import '../home/home_barrel.dart';
+
 
 class LoginView extends BaseView {
   const LoginView({super.key});
@@ -34,6 +32,8 @@ class _LoginViewState extends BaseViewState<LoginView> {
 
   @override
   void initState() {
+    _emailController.text="s@gmail.com";
+    _passwordController.text="112";
     super.initState();
   }
 
@@ -41,7 +41,8 @@ class _LoginViewState extends BaseViewState<LoginView> {
     DateTime now = DateTime.now();
     if (now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
-      Fluttertoast.showToast(msg: LocaleData.pressAgainToExit.getString(context));
+      Fluttertoast.showToast(
+          msg: LocaleData.pressAgainToExit.getString(context));
       return Future.value(false);
     }
     return Future.value(true);
@@ -104,101 +105,49 @@ class _LoginViewState extends BaseViewState<LoginView> {
                         SizedBox(
                           height: 6.h,
                         ),
-                        SvgPicture.asset(
-                          AppImages.icCircleLogo,
-                          height: size.height * 0.08,
+                        Lottie.asset(
+                          AppAnimations.qr,
+                          height: 15.h,
                         ),
                         SizedBox(
-                          height: 6.h,
+                          height: 4.h,
                         ),
                         SizedBox(
                           width: size.width - 40,
                           child: Text(
                             LocaleData.signInTO.getString(context),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textColor
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textColor),
                           ),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        // SizedBox(
-                        //   width: size.width - 40,
-                        //   child: Text(
-                        //     LocaleData.loginContent.getString(context),
-                        //     textAlign: TextAlign.center,
-                        //     style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                        //         fontWeight: FontWeight.w400,
-                        //         color: AppColors.neutralColor[600]
-                        //     ),
-                        //   ),
-                        // ),
-                        SizedBox(
-                            height: 6.h
-                        ),
+                        SizedBox(height: 6.h),
                         AppTextField(
-                          label: LocaleData.userName.getString(context),
-                          hintText: LocaleData.emailHint.getString(context),
-                          keyboardType: TextInputType.emailAddress,
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return LocaleData.emailCantEmpty.getString(context);
-                            }
-                            return null;
-                          },
-                        ),
+                            label: LocaleData.userName.getString(context),
+                            hintText: LocaleData.emailHint.getString(context),
+                            keyboardType: TextInputType.emailAddress,
+                            controller: _emailController,
+                            validator: Validator.validateEmail),
                         SizedBox(
                           height: 2.h,
                         ),
                         AppTextField(
-                          label: LocaleData.password.getString(context),
-                          hintText: LocaleData.passwordHint.getString(context),
-                          keyboardType: TextInputType.text,
-                          controller: _passwordController,
-                          password: true,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return LocaleData.passwordCantEmpty.getString(context);
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                            width: size.width - 40,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          PageTransition(child:  const MailOtpView(), type: PageTransitionType.fade)
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 1.h),
-                                      child: Text(
-                                        LocaleData.forgotPassword.getString(context),
-                                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                            color: AppColors.primaryColor[600],
-                                            fontWeight: FontWeight.w700
-                                        ),
-                                      ),
-                                    )
-                                ),
-                              ],
-                            )
-                        ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
+                            label: LocaleData.password.getString(context),
+                            hintText:
+                                LocaleData.passwordHint.getString(context),
+                            keyboardType: TextInputType.text,
+                            controller: _passwordController,
+                            password: true,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Password can\'t be empty';
+                              }
+                              return null;
+                            }),
                       ],
                     ),
                   ),
@@ -208,15 +157,22 @@ class _LoginViewState extends BaseViewState<LoginView> {
                       children: [
                         AppButton(
                           buttonText: LocaleData.login.getString(context),
-                          onTapButton: (){},
+                          onTapButton: () {
+                            if (_formKey.currentState!.validate()) {
+                              _navigateToHome();
+                            }
+                          },
                         ),
                       ],
                     ),
                   )
                 ],
-              )
-          ),
-        )
-    );
+              )),
+        ));
+  }
+
+  void _navigateToHome() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) =>  Base()), (route) => false);
   }
 }

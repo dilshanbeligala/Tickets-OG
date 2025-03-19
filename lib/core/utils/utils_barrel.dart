@@ -9,3 +9,4 @@ export 'locales/locales.dart';
 export 'themes/theme_state.dart';
 export 'themes/theme_event.dart';
 export 'themes/theme_bloc.dart';
+export 'app_animations.dart';

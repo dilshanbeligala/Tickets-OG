@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tickets_og/core/utils/utils_barrel.dart';
 
 
@@ -85,27 +84,27 @@ class AppTextFieldState extends State<AppTextField> {
                   color: AppColors.dangerColor[500],
                 ),
                 hintText: widget.hintText,
-                suffixIcon: widget.suffix??(widget.dropdown?Container(
-                  padding: const EdgeInsets.only(right: 22, top: 4, bottom: 4, left: 8),
-                  child:  SvgPicture.asset(
-                    AppImages.icArrowDown,
-                    width: 8,
-                  ),
-                ):(widget.password?InkWell(
-                  onTap: (){
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(right: 18, top: obscureText?8:4, bottom: 4, left: 8),
-                    child:  SvgPicture.asset(
-                      obscureText?AppImages.icEyeClose:AppImages.icEyeOpen,
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
-                ):null)),
+                // suffixIcon: widget.suffix??(widget.dropdown?Container(
+                //   padding: const EdgeInsets.only(right: 22, top: 4, bottom: 4, left: 8),
+                //   child:  SvgPicture.asset(
+                //     AppImages.icArrowDown,
+                //     width: 8,
+                //   ),
+                // ):(widget.password?InkWell(
+                //   onTap: (){
+                //     setState(() {
+                //       obscureText = !obscureText;
+                //     });
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(right: 18, top: obscureText?8:4, bottom: 4, left: 8),
+                //     child:  SvgPicture.asset(
+                //       obscureText?AppImages.icEyeClose:AppImages.icEyeOpen,
+                //       height: 24,
+                //       width: 24,
+                //     ),
+                //   ),
+                // ):null)),
                 hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
                     color: widget.hintColor??AppColors.neutralColor[600],
                     fontWeight: FontWeight.w500,
