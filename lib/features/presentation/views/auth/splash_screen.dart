@@ -1,132 +1,94 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
-import 'package:get_it/get_it.dart';
-import 'package:tickets_og/features/presentation/views/auth/auth_barrel.dart';
-import '../../../../../core/utils/utils_barrel.dart';
-import '../../../domain/repository/repository_barrel.dart';
-import '../base_view.dart';
+import '../../../../core/utils/utils_barrel.dart';
+import 'login_view.dart';
 
-class SplashView extends BaseView {
-  const SplashView({super.key});
+class Splash extends StatefulWidget {
+  const Splash({super.key});
 
   @override
-  SplashViewState createState() => SplashViewState();
+  SplashState createState() => SplashState();
 }
 
-class SplashViewState extends BaseViewState<SplashView> with SingleTickerProviderStateMixin {
-  final Repository _repository = GetIt.I<Repository>();
-  late AnimationController _controller;
-  late Animation<double> _opacityAnimation;
+class SplashState extends State<Splash> {
+  startTime() async {
+    var duration = const Duration(seconds: 4);
+    return Timer(duration, navigationPage);
+  }
+
+  Future<void> navigationPage() async {
+    _navigate(const  LoginView());
+  }
 
   @override
   void initState() {
     super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-
-    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(_controller);
-
-    _startFadeOut();
-  }
-
-  Future<void> _startFadeOut() async {
-    await Future.delayed(const Duration(seconds: 2));
-    _controller.forward();
-    await Future.delayed(const Duration(seconds: 2));
-    _navigate(const LoginView());
-  }
-
-  void _navigate(view) {
-    Navigator.of(context).pushAndRemoveUntil(
-      PageTransition(child: view, type: PageTransitionType.fade),
-          (route) => false,
-    );
+    startTime();
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget buildView(BuildContext context) {
-    final padding = MediaQuery.of(context).padding;
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
+      backgroundColor: const Color(0xFF0E0E0E),
+      body: SafeArea(
         child: Stack(
-          fit: StackFit.expand,
+          alignment: Alignment.center,
           children: [
-            AnimatedBuilder(
-              animation: _opacityAnimation,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _opacityAnimation.value,
-                  child: Image.asset(
-                    AppImages.icSplashBg,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              },
+            Positioned(
+              top: 39.h,
+              child: _buildLogo(),
             ),
-
-            SizedBox(
-              height: 100.h,
-              width: 100.w,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Logo (uncomment if needed)
-                      // Image(
-                      //   image: const AssetImage(AppImages.icLogo),
-                      //   height: 30.w,
-                      // ),
-                    ],
-                  ),
-                  Positioned(
-                    bottom: padding.bottom,
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: "Powered by\n",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.black,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "TicketsOG",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(
-                              color: AppColors.primaryColor[900],
-                              fontWeight: FontWeight.w700,
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.fontSize,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            Positioned(
+              bottom: 0,
+              child: _buildFooter(size, context),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildLogo() {
+    return ShaderMask(
+      shaderCallback: (bounds) => const LinearGradient(
+        colors: [Color(0xFFFFE5F1), Color(0xFFF042FF), Color(0xFF7226FF)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ).createShader(bounds),
+      child: Text(
+        'TICKETS OG',
+        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+          fontWeight: FontWeight.bold,
+          height: 1.71,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooter(Size size, BuildContext context) {
+    return SizedBox(
+      width: size.width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Image.asset(
+              AppImages.icSplashBg,
+              width: size.width,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+  void _navigate(view) {
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (c) => view), (route) => false,);
   }
 }

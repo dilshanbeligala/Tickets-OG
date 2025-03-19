@@ -21,29 +21,29 @@ class ThemeState {
         ),
       ),
       textTheme: TextTheme(
-        headlineLarge: GoogleFonts.figtree(
+        headlineLarge: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 40),
-        headlineMedium: GoogleFonts.figtree(
+        headlineMedium: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 32),
-        headlineSmall: GoogleFonts.figtree(
+        headlineSmall: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 28),
-        titleLarge: GoogleFonts.figtree(
+        titleLarge: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 24),
-        titleMedium: GoogleFonts.figtree(
+        titleMedium: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 22),
-        titleSmall: GoogleFonts.figtree(
+        titleSmall: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 20),
-        labelLarge: GoogleFonts.figtree(
+        labelLarge: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 18),
-        labelMedium: GoogleFonts.figtree(
+        labelMedium: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 16),
-        labelSmall: GoogleFonts.figtree(
+        labelSmall: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 14),
-        bodyLarge: GoogleFonts.figtree(
+        bodyLarge: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 13),
-        bodyMedium: GoogleFonts.figtree(
+        bodyMedium: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 12),
-        bodySmall: GoogleFonts.figtree(
+        bodySmall: GoogleFonts.montserrat(
             color: AppColors.neutralColor[100], fontSize: 10),
       ),
     ),

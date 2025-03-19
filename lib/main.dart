@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocBuilder(
       bloc: BlocProvider.of<ThemeBloc>(context),
       builder: (BuildContext context, ThemeState state) => MaterialApp(
@@ -74,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: localization.supportedLocales,
         localizationsDelegates: localization.localizationsDelegates,
         theme: state.themeData,
-        home: const SplashView(),
+        home: const Splash(),
         routes: const {},
       ),
     );
