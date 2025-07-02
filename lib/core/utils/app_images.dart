@@ -8,4 +8,6 @@ class AppImages {
   //png
   static const icHomeBg = "assets/images/png/main-bg.png";
   static const icSplashBg = "assets/images/png/splash.png";
+  static const icLogin = "assets/images/png/login.png";
+
 }

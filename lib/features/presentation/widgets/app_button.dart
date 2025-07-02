@@ -6,7 +6,7 @@ import '../../../core/utils/utils_barrel.dart';
 class AppButton extends StatelessWidget {
   final String buttonText;
   final void Function() onTapButton;
-  final Color bgColor;
+  final List<Color>? gradientColors;
   final Color textColor;
   final double? width;
   final double? radius;
@@ -22,7 +22,7 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.buttonText,
     required this.onTapButton,
-    this.bgColor = const Color(0xFFFF2C37),
+    this.gradientColors,
     this.textColor = Colors.white,
     this.width,
     this.padding,
@@ -53,21 +53,30 @@ class AppButton extends StatelessWidget {
         width: width ?? (padding == null ? size.width - 40 : null),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(radius ?? 30)),
-          border: Border.all(color: disable ? AppColors.neutralColor[300]! : bgColor, width: 1),
-          color: outLined ? Colors.white : disable ? AppColors.neutralColor[100] : bgColor,
+          borderRadius: BorderRadius.all(Radius.circular(radius ?? 8)),
+          border: outLined
+              ? Border.all(color: disable ? AppColors.neutralColor[300]! : (gradientColors?.first ?? Colors.red), width: 1)
+              : null,
+          gradient: !outLined && !disable
+              ? LinearGradient(
+            colors: gradientColors ?? [Color(0xFFD382E1),Colors.white,Colors.white, Color(0xFFD382E1),],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+              : null,
+          color: outLined ? Colors.white : disable ? AppColors.neutralColor[100] : null,
         ),
-        // alignment: Alignment.center,
         padding: padding ?? EdgeInsets.symmetric(vertical: verticalPadding ?? 18),
-        child: Text(buttonText,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                fontSize: fontSize,
-                color: disable ? AppColors.neutralColor[300] : outLined ? bgColor : textColor,
-                fontWeight: fontWeight ?? FontWeight.w600,
-                letterSpacing: 0.8,
-                height: 1.5
-            )
+        child: Text(
+          buttonText,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+            fontSize: fontSize,
+            color: disable ? AppColors.neutralColor[300] : outLined ? (gradientColors?.first ?? Colors.red) : Colors.black,
+            fontWeight: fontWeight ?? FontWeight.w700,
+            letterSpacing: 0.8,
+            height: 1.5,
+          ),
         ),
       ),
     );

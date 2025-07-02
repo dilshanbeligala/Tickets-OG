@@ -34,6 +34,7 @@ class BaseState extends State<Base> with TickerProviderStateMixin{
     navData = [
       NavData(label: 'Home', basePage: const HomePage(), activeIcon: AppImages.icEyeOpen, inActiveIcon: AppImages.icEyeOpen),
       NavData(label: 'Scan', basePage: const ScanPage(), activeIcon: AppImages.icEyeOpen, inActiveIcon: AppImages.icEyeOpen),
+      NavData(label: 'Settings', basePage: const ScanPage(), activeIcon: AppImages.icEyeOpen, inActiveIcon: AppImages.icEyeOpen),
 
     ];
   }
