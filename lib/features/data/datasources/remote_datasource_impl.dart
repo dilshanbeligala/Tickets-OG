@@ -52,7 +52,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<RotateTokenResponse> rotateToken(RotateTokenRequest request) async{
     try {
       final response = await http.Client().post(
-        Uri.parse(getUrl(url: "auth/rotate-token").toString()),
+        Uri.parse(getUrl(url: "refresh-token").toString()),
         headers: await authorizedHeader(),
         body: jsonEncode(request.toJson()),
       );
