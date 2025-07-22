@@ -1,14 +1,14 @@
-class LoginResponse {
+class RotateTokenResponse {
   String? success;
   String? message;
-  Data? data;
+  Token? data;
 
-  LoginResponse({this.success, this.message, this.data});
+  RotateTokenResponse({this.success, this.message, this.data});
 
-  LoginResponse.fromJson(Map<String, dynamic> json) {
+  RotateTokenResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Token.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +22,13 @@ class LoginResponse {
   }
 }
 
-class Data {
+class Token {
   String? token;
   String? refreshToken;
 
-  Data({this.token, this.refreshToken});
+  Token({this.token, this.refreshToken});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Token.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     refreshToken = json['refreshToken'];
   }

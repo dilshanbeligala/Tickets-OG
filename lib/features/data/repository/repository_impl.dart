@@ -1,24 +1,21 @@
-import 'dart:async';
 import 'package:dartz/dartz.dart';
-import 'package:tickets_og/error/error_barrel.dart';
-import 'package:tickets_og/features/data/models/request/request_barrel.dart';
-import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 import '../../../core/network/network_barrel.dart';
+import '../../../core/services/service_barrel.dart';
+import '../../../error/error_barrel.dart';
 import '../../domain/repository/repository.dart';
 import '../datasources/data_source_barrel.dart';
-
-
+import '../models/request/request_barrel.dart';
+import '../models/response/response_barrel.dart';
 
 class RepositoryImpl implements Repository {
   final RemoteDataSource? remoteDataSource;
   final NetworkInfo? networkInfo;
   final LocalDataSource? localDataSource;
-  final StreamController<String?> _tokenController = StreamController<String?>.broadcast();
 
   RepositoryImpl({
     required this.remoteDataSource,
-    required this.networkInfo,
-    required this.localDataSource,
+    this.networkInfo,
+    this.localDataSource,
   });
 
   @override
@@ -31,9 +28,36 @@ class RepositoryImpl implements Repository {
     return localDataSource!.setBool(LocalStorageKey.isDark, isDark);
   }
 
+  @override
+  Future<String?> getAccessToken() async {
+    return await localDataSource!.getSecreteString(LocalStorageKey.accessToken);
+  }
 
   @override
-  Future<Map?> getUserData() {
+  Future<void> saveAccessToken({required String token}) async {
+    return await localDataSource!.setSecreteString(LocalStorageKey.accessToken, token);
+  }
+
+  @override
+  Future<String?> getRefreshToken() async {
+    return await localDataSource!.getSecreteString(LocalStorageKey.refreshToken);
+  }
+
+  @override
+  Future<void> saveRefreshToken({required String token}) async {
+    return await localDataSource!.setSecreteString(LocalStorageKey.refreshToken, token);
+  }
+
+  @override
+  Future<void> deleteTokens() async {
+    await localDataSource!.deleteSecreteString(LocalStorageKey.accessToken);
+    await localDataSource!.deleteSecreteString(LocalStorageKey.refreshToken);
+    await localDataSource!.deleteMap(LocalStorageKey.userData);
+    return;
+  }
+
+  @override
+  Map? getUserData() {
     return localDataSource!.getMap(LocalStorageKey.userData);
   }
 
@@ -42,104 +66,31 @@ class RepositoryImpl implements Repository {
     return localDataSource!.setMap(LocalStorageKey.userData, data);
   }
 
-  void _notifyTokenChange(String? token) {
-    _tokenController.add(token);
-  }
-
-  Future<void> _setToken(String token) async {
-    await localDataSource?.setSecreteString(LocalStorageKey.token, token);
-    _notifyTokenChange(token);
-  }
-
-  Future<void> _deleteToken() async {
-    await localDataSource?.deleteSecreteString(LocalStorageKey.token);
-    _notifyTokenChange(null);
-  }
-
-  @override
-  Future<bool> isSignedIn() async {
-    // return FirebaseAuth.instance.currentUser != null;
-    return false;
-  }
-
-  @override
-  Future<Either<Failure, RegisterResponse>> register(RegisterRequest registerRequest) async {
+  Future<Either<Failure, T>> _safeApiCall<T>(Future<T> Function() apiCall) async {
     if (await networkInfo!.isConnected) {
       try {
-        final response = await remoteDataSource?.register(registerRequest);
-        return Right(response!);
+        return Right(await apiCall());
       } on ServerException catch (e) {
         return Left(ServerFailure(e.errorResponseModel));
       } on UnAuthorizedException catch (e) {
         return Left(AuthorizedFailure(e.errorResponseModel));
       }
-    } else {
-      return Left(ConnectionFailure());
     }
+    return Left(ConnectionFailure());
   }
 
   @override
-  Future<Either<Failure, LoginResponse>> login(LoginRequest loginRequest) async {
-    if (await networkInfo!.isConnected) {
-      try {
-        final response = await remoteDataSource?.login(loginRequest);
-        return Right(response!);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.errorResponseModel));
-      } on UnAuthorizedException catch (e) {
-        return Left(AuthorizedFailure(e.errorResponseModel));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
+  Future<Either<Failure, LoginResponse>> login(LoginRequest request) async =>
+      _safeApiCall(() async {
+        final response = await remoteDataSource!.login(request);
+        final tokenService = injection<TokenService>();
+        await tokenService.setToken(
+          accessToken: response.data?.token ?? '',
+          refreshToken: response.data?.refreshToken ?? '',
+          // userData: response.token?.user?.toJson() ?? {},
+        );
+        return response;
+      });
 
-  @override
-  Future<Either<Failure, RecoverResponse>> recover(RecoverRequest recoverRequest) async {
-    if (await networkInfo!.isConnected) {
-      try {
-        final response = await remoteDataSource?.recover(recoverRequest);
-        return Right(response!);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.errorResponseModel));
-      } on UnAuthorizedException catch (e) {
-        return Left(AuthorizedFailure(e.errorResponseModel));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, VerifyOtpResponse>> verifyOtp(VerifyOtpRequest verifyOtpRequest) async {
-    if (await networkInfo!.isConnected) {
-      try {
-        final response = await remoteDataSource?.verifyOtp(verifyOtpRequest);
-        return Right(response!);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.errorResponseModel));
-      } on UnAuthorizedException catch (e) {
-        return Left(AuthorizedFailure(e.errorResponseModel));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, ResetResponse>> reset(ResetRequest resetRequest) async {
-    if (await networkInfo!.isConnected) {
-      try {
-        final response = await remoteDataSource?.reset(resetRequest);
-        return Right(response!);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.errorResponseModel));
-      } on UnAuthorizedException catch (e) {
-        return Left(AuthorizedFailure(e.errorResponseModel));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
 
 }

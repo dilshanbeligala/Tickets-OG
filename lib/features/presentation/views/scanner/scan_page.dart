@@ -1,11 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/utils/utils_barrel.dart';
 import '../base_view.dart';
 import 'scanner.dart';
 
@@ -90,17 +86,6 @@ class ScanPageState extends BaseViewState<ScanPage>{
               children: [
                 Scanner(
                   onDetect: onDetect,
-                ),
-                Positioned(
-                    top: 07.h,
-                    child: Column(
-                      children: [
-                        Lottie.asset(
-                          AppAnimations.qr,
-                          height: 15.h,
-                        ),
-                      ],
-                    )
                 ),
               ],
             )

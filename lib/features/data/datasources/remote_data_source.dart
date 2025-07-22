@@ -3,7 +3,7 @@ import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 
 abstract class RemoteDataSource {
 
-  Future<RegisterResponse> register(RegisterRequest registerRequest);
+  Future<RotateTokenResponse?> rotateToken(RotateTokenRequest request);
 
   Future<LoginResponse> login(LoginRequest loginRequest);
 

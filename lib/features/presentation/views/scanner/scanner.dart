@@ -117,7 +117,8 @@ class ScannerState extends State<Scanner>{
                       ),
                       alignment: Alignment.center,
                       child: SvgPicture.asset(
-                        'assets/icons/toach.svg',
+                        AppImages.icFlasher,
+                        color: Colors.white,
                       ),
                     ),
                   ),

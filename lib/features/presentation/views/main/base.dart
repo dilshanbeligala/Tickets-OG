@@ -32,9 +32,9 @@ class BaseState extends State<Base> with TickerProviderStateMixin{
     super.initState();
     _controller = AnimationController(vsync: this);
     navData = [
-      NavData(label: 'Home', basePage: const HomePage(), activeIcon: AppImages.icEyeOpen, inActiveIcon: AppImages.icEyeOpen),
-      NavData(label: 'Scan', basePage: const ScanPage(), activeIcon: AppImages.icEyeOpen, inActiveIcon: AppImages.icEyeOpen),
-      NavData(label: 'Settings', basePage: const ScanPage(), activeIcon: AppImages.icEyeOpen, inActiveIcon: AppImages.icEyeOpen),
+      NavData(label: 'Home', basePage: const HomePage(), activeIcon: AppImages.icHome, inActiveIcon: AppImages.icHome),
+      NavData(label: 'Scan', basePage: const ScanPage(), activeIcon: AppImages.icQr, inActiveIcon: AppImages.icQr),
+      NavData(label: 'Settings', basePage: const ScanPage(), activeIcon: AppImages.icHistory, inActiveIcon: AppImages.icHistory),
 
     ];
   }

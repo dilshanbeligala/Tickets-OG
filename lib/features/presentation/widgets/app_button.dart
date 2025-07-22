@@ -38,6 +38,12 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final isOutlined = outLined;
+    final isDisabled = disable;
+    final borderColor = isDisabled
+        ? AppColors.neutralColor[300]!
+        : (gradientColors?.first ?? Colors.red);
+
     return BouncingWidget(
       duration: Duration(milliseconds: clickDuration ?? 100),
       scaleFactor: 0.5,
@@ -49,33 +55,58 @@ class AppButton extends StatelessWidget {
           onTapButton();
         }
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
         width: width ?? (padding == null ? size.width - 40 : null),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(radius ?? 8)),
-          border: outLined
-              ? Border.all(color: disable ? AppColors.neutralColor[300]! : (gradientColors?.first ?? Colors.red), width: 1)
-              : null,
-          gradient: !outLined && !disable
+          borderRadius: BorderRadius.circular(radius ?? 8),
+          border: isOutlined ? Border.all(color: borderColor, width: 1) : null,
+          gradient: !isOutlined && !isDisabled
               ? LinearGradient(
-            colors: gradientColors ?? [Color(0xFFD382E1),Colors.white,Colors.white, Color(0xFFD382E1),],
+            colors: gradientColors ??
+                [
+                   Colors.white,
+                   Colors.white,
+                  // const Color(0xfff2d2fd),
+
+                ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           )
               : null,
-          color: outLined ? Colors.white : disable ? AppColors.neutralColor[100] : null,
+          color: isOutlined
+              ? Colors.white
+              : isDisabled
+              ? AppColors.neutralColor[100]
+              : null,
+          boxShadow: !isOutlined && !isDisabled
+              ? [
+            BoxShadow(
+              color: (gradientColors?.first ?? Colors.black12)
+                  .withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ]
+              : null,
         ),
-        padding: padding ?? EdgeInsets.symmetric(vertical: verticalPadding ?? 18),
+        padding:
+        padding ?? EdgeInsets.symmetric(vertical: verticalPadding ?? 18),
         child: Text(
           buttonText,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.labelLarge!.copyWith(
             fontSize: fontSize,
-            color: disable ? AppColors.neutralColor[300] : outLined ? (gradientColors?.first ?? Colors.red) : Colors.black,
+            color: isDisabled
+                ? AppColors.neutralColor[300]
+                : isOutlined
+                ? borderColor
+                : Colors.black,
             fontWeight: fontWeight ?? FontWeight.w700,
-            letterSpacing: 0.8,
-            height: 1.5,
+            letterSpacing: 0.6,
+            height: 1.4,
           ),
         ),
       ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tickets_og/features/presentation/views/main/base.dart';
+import 'package:tickets_og/features/presentation/views/main/home_view.dart';
 import '../../../../core/utils/utils_barrel.dart';
 import 'login_view.dart';
 
@@ -18,7 +20,7 @@ class SplashState extends State<Splash> {
   }
 
   Future<void> navigationPage() async {
-    _navigate(const  LoginView());
+    _navigate(Base());
   }
 
   @override
@@ -31,7 +33,7 @@ class SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xFF0E0E0E),
+      backgroundColor:  Colors.white,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -40,10 +42,10 @@ class SplashState extends State<Splash> {
               top: 39.h,
               child: _buildLogo(),
             ),
-            Positioned(
-              bottom: 0,
-              child: _buildFooter(size, context),
-            ),
+            // Positioned(
+            //   bottom: 0,
+            //   // child: _buildFooter(size, context),
+            // ),
           ],
         ),
       ),
@@ -53,7 +55,7 @@ class SplashState extends State<Splash> {
   Widget _buildLogo() {
     return ShaderMask(
       shaderCallback: (bounds) => const LinearGradient(
-        colors: [Color(0xFFFFE5F1), Color(0xFFF042FF), Color(0xFF7226FF)],
+        colors: [Color(0xFFB81D24),Color(0xFFB81D24),Color(0xFFB81D24)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ).createShader(bounds),
@@ -67,24 +69,24 @@ class SplashState extends State<Splash> {
     );
   }
 
-  Widget _buildFooter(Size size, BuildContext context) {
-    return SizedBox(
-      width: size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Image.asset(
-              AppImages.icSplashBg,
-              width: size.width,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildFooter(Size size, BuildContext context) {
+  //   return SizedBox(
+  //     width: size.width,
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         Container(
+  //           margin: const EdgeInsets.only(bottom: 10),
+  //           child: Image.asset(
+  //             AppImages.icSplashBg,
+  //             width: size.width,
+  //             fit: BoxFit.fitWidth,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
 
 

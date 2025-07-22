@@ -7,9 +7,7 @@ class LocalDataSource {
   FlutterSecureStorage? secureStorage;
   SharedPreferences? prefs;
 
-  LocalDataSource(
-      {FlutterSecureStorage? securePreferences,
-        SharedPreferences? sharedPreferences}) {
+  LocalDataSource({FlutterSecureStorage? securePreferences, SharedPreferences? sharedPreferences}) {
     secureStorage = securePreferences;
     prefs = sharedPreferences;
   }
@@ -34,9 +32,9 @@ class LocalDataSource {
     return pref.remove(key);
   }
 
-  Future<Map?> getMap(String key) async {
-    final pref = await SharedPreferences.getInstance();
-    String? value = pref.getString(key);
+  Map? getMap(String key) {
+    // final pref = await SharedPreferences.getInstance();
+    String? value = prefs!.getString(key);
     if (value == null) {
       return null;
     }

@@ -29,7 +29,7 @@ class BottomNavigation extends StatelessWidget {
       margin: EdgeInsets.only(bottom: padding.bottom + 1.h, left:20, right:20),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF2C2C2E).withValues(alpha: 0.8),
+          color:  Colors.grey.shade400,
           borderRadius: BorderRadius.circular(36),
         ),
         width: 100.w - 40,
@@ -53,7 +53,7 @@ class BottomNavigation extends StatelessWidget {
                       curve: Curves.easeInOut,
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
-                        color: index == i?AppColors.neutralColor[700]:null,
+                        color: index == i?const Color(0xFF221F1F):null,
                         borderRadius: BorderRadius.circular(48),
                       ),
                       child: (index == i)?Row(

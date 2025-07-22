@@ -4,3 +4,5 @@ export 'login_response.dart';
 export 'recover_response.dart';
 export 'verify_otp_response.dart';
 export 'reset_response.dart';
+export 'get_ticket_details_response.dart';
+export 'rotate_token_response.dart';

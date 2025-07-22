@@ -1,30 +1,31 @@
-
 import 'package:dartz/dartz.dart';
-import 'package:tickets_og/error/error_barrel.dart';
-import 'package:tickets_og/features/data/models/request/request_barrel.dart';
-import 'package:tickets_og/features/data/models/response/response_barrel.dart';
 
+import '../../../error/error_barrel.dart';
+import '../../data/models/request/request_barrel.dart';
+import '../../data/models/response/response_barrel.dart';
 
 abstract class Repository {
 
   Future<bool> isDark();
 
-  Future<void> saveUserData({required Map data});
-
-  Future<Map?> getUserData();
-
   Future<bool> updateThemeMode({required bool isDark});
 
-  Future<bool> isSignedIn();
+  Future<String?> getAccessToken();
 
-  Future<Either<Failure, RegisterResponse>> register(RegisterRequest registerRequest);
+  Future<void> saveAccessToken({required String token});
+
+  Future<String?> getRefreshToken();
+
+  Future<void> saveRefreshToken({required String token});
+
+  Future<void> deleteTokens();
+
+  Future<void> saveUserData({required Map data});
+
+  Map? getUserData();
 
   Future<Either<Failure, LoginResponse>> login(LoginRequest loginRequest);
 
-  Future<Either<Failure, RecoverResponse>> recover(RecoverRequest recoverRequest);
-
-  Future<Either<Failure, VerifyOtpResponse>> verifyOtp(VerifyOtpRequest verifyOtpRequest);
-
-  Future<Either<Failure, ResetResponse>> reset(ResetRequest resetRequest);
 
 }
+

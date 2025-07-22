@@ -21,29 +21,29 @@ class ThemeState {
         ),
       ),
       textTheme: TextTheme(
-        headlineLarge: GoogleFonts.montserrat(
+        headlineLarge: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 40),
-        headlineMedium: GoogleFonts.montserrat(
+        headlineMedium: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 32),
-        headlineSmall: GoogleFonts.montserrat(
+        headlineSmall: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 28),
-        titleLarge: GoogleFonts.montserrat(
+        titleLarge: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 24),
-        titleMedium: GoogleFonts.montserrat(
+        titleMedium: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 22),
-        titleSmall: GoogleFonts.montserrat(
+        titleSmall: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 20),
-        labelLarge: GoogleFonts.montserrat(
+        labelLarge: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 18),
-        labelMedium: GoogleFonts.montserrat(
+        labelMedium: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 16),
-        labelSmall: GoogleFonts.montserrat(
+        labelSmall: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 14),
-        bodyLarge: GoogleFonts.montserrat(
+        bodyLarge: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 13),
-        bodyMedium: GoogleFonts.montserrat(
+        bodyMedium: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 12),
-        bodySmall: GoogleFonts.montserrat(
+        bodySmall: GoogleFonts.inter(
             color: AppColors.neutralColor[100], fontSize: 10),
       ),
     ),

@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../../../error/exceptions.dart' as exe;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tickets_og/core/services/service_barrel.dart';
@@ -30,7 +33,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<Map<String, String>> authorizedHeader() async {
     var localDataSource = injection<LocalDataSource>();
     var token =
-    await localDataSource.getSecreteString(LocalStorageKey.token);
+    await localDataSource.getSecreteString(LocalStorageKey.accessToken);
     return {
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json; charset=UTF-8',
@@ -38,18 +41,38 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     };
   }
 
+  Future<Map<String, String>> unauthorizedHeader() async {
+    return {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json; charset=UTF-8',
+    };
+  }
+
   @override
-  Future<RegisterResponse> register(
-      RegisterRequest registerRequest) async {
+  Future<RotateTokenResponse> rotateToken(RotateTokenRequest request) async{
     try {
-      final response = await apiHelper!.post(
-        getUrl(url: "register").toString(),
+      final response = await http.Client().post(
+        Uri.parse(getUrl(url: "auth/rotate-token").toString()),
         headers: await authorizedHeader(),
-        body: registerRequest.toJson(),
+        body: jsonEncode(request.toJson()),
       );
-      return RegisterResponse.fromJson(response);
+      if(response.statusCode == 200){
+        return RotateTokenResponse.fromJson(jsonDecode(response.body));
+      }else{
+        throw exe.UnAuthorizedException(
+            errorResponseModel:const ErrorResponseModel(
+              errorCode: 'Unauthorized',
+              errorDescription: 'Please log in before using this feature.',
+            )
+        );
+      }
     } on Exception {
-      rethrow;
+      throw exe.UnAuthorizedException(
+          errorResponseModel:const ErrorResponseModel(
+            errorCode: 'Unauthorized',
+            errorDescription: 'Please log in before using this feature.',
+          )
+      );
     }
   }
 
@@ -58,8 +81,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       LoginRequest loginRequest) async {
     try {
       final response = await apiHelper!.post(
-        getUrl(url: "login").toString(),
-        headers: await authorizedHeader(),
+        getUrl(url: "/login").toString(),
+        headers: await unauthorizedHeader(),
         body: loginRequest.toJson(),
       );
       return LoginResponse.fromJson(response);

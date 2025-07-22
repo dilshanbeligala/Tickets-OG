@@ -1,6 +1,4 @@
-
-
-import '../../features/data/models/response/response_barrel.dart';
+import '../features/data/models/response/response_barrel.dart';
 
 class ServerException implements Exception {
   final ErrorResponseModel errorResponseModel;

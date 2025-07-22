@@ -87,8 +87,8 @@ class AppTextFieldState extends State<AppTextField> {
               borderRadius: BorderRadius.circular(8),
               gradient: LinearGradient(
                 colors: [
-                  Colors.purpleAccent,
-                  Colors.blueAccent,
+                   Colors.white,
+                   Colors.white,
                 ],
               ),
             ),
@@ -139,7 +139,7 @@ class AppTextFieldState extends State<AppTextField> {
                   style: Theme.of(context).textTheme.labelSmall!.copyWith(
                     color: !widget.enable
                         ? (widget.textColor ?? Colors.grey)
-                        : (widget.textColor ?? Colors.black),
+                        : (widget.textColor ?? Colors.white),
                     fontWeight: FontWeight.w500,
                     height: widget.lines == 1 ? 1.1 : 1.5,
                   ),
