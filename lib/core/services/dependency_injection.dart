@@ -9,6 +9,7 @@ import '../../features/data/datasources/data_source_barrel.dart';
 import '../../features/data/repository/repository_impl_barrel.dart';
 import '../../features/domain/repository/repository_barrel.dart';
 import '../network/network_barrel.dart';
+import 'service_barrel.dart';
 
 final injection = GetIt.I;
 
@@ -40,6 +41,7 @@ Future<void> setupLocator() async {
       networkInfo: injection(),
     ),
   );
+  injection.registerSingleton(TokenService(repository: injection()));
 
 // useCases
   injection.registerLazySingleton(() => LoginUseCase(repository: injection()));

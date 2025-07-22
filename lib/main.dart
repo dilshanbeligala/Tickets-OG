@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sizer/sizer.dart';
-
-import 'package:tickets_og/features/presentation/views/main/base.dart';
+import 'package:tickets_og/features/presentation/views/auth/auth_barrel.dart';
 import 'core/services/dependency_injection.dart';
 import 'core/utils/navigation_routes.dart';
 import 'core/utils/themes/theme_bloc.dart';
@@ -69,7 +68,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: state.themeData,
-        home: Base(),
+        home: const Splash(),
         routes: const {},
       ),
     );

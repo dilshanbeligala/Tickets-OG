@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tickets_og/features/presentation/views/main/base.dart';
-import 'package:tickets_og/features/presentation/views/main/home_view.dart';
-import '../../../../core/utils/utils_barrel.dart';
-import 'login_view.dart';
+import 'package:tickets_og/core/utils/app_images.dart';
+import '../../../../core/services/service_barrel.dart';
+import '../auth/auth_barrel.dart';
+import '../main/main_barrel.dart';
+
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -14,83 +15,70 @@ class Splash extends StatefulWidget {
 }
 
 class SplashState extends State<Splash> {
-  startTime() async {
-    var duration = const Duration(seconds: 4);
-    return Timer(duration, navigationPage);
-  }
-
-  Future<void> navigationPage() async {
-    _navigate(Base());
-  }
+  final TokenService tokenService = injection();
 
   @override
   void initState() {
     super.initState();
-    startTime();
+    navigationPage();
+  }
+
+  Future<void> navigationPage() async {
+    if (await tokenService.checkToken()) {
+      _navigate( Base());
+    } else {
+      await Future.delayed(const Duration(seconds: 1));
+      _navigate(const LoginView());
+    }
+  }
+
+  void _navigate(Widget view) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (c) => view),
+          (route) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor:  Colors.white,
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Positioned(
-              top: 39.h,
-              child: _buildLogo(),
-            ),
-            // Positioned(
-            //   bottom: 0,
-            //   // child: _buildFooter(size, context),
-            // ),
-          ],
-        ),
+      backgroundColor: Colors.white,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            top: 39.h,
+            child: _buildLogo(),
+          ),
+          Positioned(
+            bottom: 3.h,
+            child: _buildFooter(size),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildLogo() {
-    return ShaderMask(
-      shaderCallback: (bounds) => const LinearGradient(
-        colors: [Color(0xFFB81D24),Color(0xFFB81D24),Color(0xFFB81D24)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ).createShader(bounds),
-      child: Text(
-        'TICKETS OG',
-        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-          fontWeight: FontWeight.bold,
-          height: 1.71,
-        ),
-      ),
+    return Image.asset(
+      AppImages.icLogo1,
+      height: 11.3.h,
     );
   }
 
-  // Widget _buildFooter(Size size, BuildContext context) {
-  //   return SizedBox(
-  //     width: size.width,
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         Container(
-  //           margin: const EdgeInsets.only(bottom: 10),
-  //           child: Image.asset(
-  //             AppImages.icSplashBg,
-  //             width: size.width,
-  //             fit: BoxFit.fitWidth,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-
-
-  void _navigate(view) {
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (c) => view), (route) => false,);
+  Widget _buildFooter(Size size) {
+    return SizedBox(
+      width: size.width - 50,
+      child: Text(
+        'Copyright © 2025 TicketsOG Pvt(Ltd) |\nAll Rights Reserved',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 10.sp,
+          color: Colors.grey[600],
+        ),
+      ),
+    );
   }
 }

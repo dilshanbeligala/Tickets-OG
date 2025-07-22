@@ -15,6 +15,7 @@ class AppImages {
   // static const icHomeBg = "assets/images/png/main-bg.png";
   static const icSplashBg = "assets/images/png/splash.png";
   static const icLogin = "assets/images/png/login.png";
+  static const icLogo1 = "assets/images/png/logo-1.png";
   // static const icHome= "assets/images/png/home.png";
 
 }
