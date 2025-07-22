@@ -135,4 +135,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<GetTicketDetailsResponse> getTicketDetails()  async {
+    try {
+      final response = await apiHelper!.get(
+        getUrl(url: "getTicketDetail").toString(),
+        headers: await authorizedHeader(),
+      );
+      return GetTicketDetailsResponse.fromJson(response);
+    } on Exception {
+      rethrow;
+    }
+  }
 }

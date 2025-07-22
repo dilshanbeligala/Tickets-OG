@@ -26,6 +26,8 @@ abstract class Repository {
 
   Future<Either<Failure, LoginResponse>> login(LoginRequest loginRequest);
 
+  Future<Either<Failure, GetTicketDetailsResponse>> getTicketDetails();
+
 
 }
 

@@ -13,4 +13,6 @@ abstract class RemoteDataSource {
 
   Future<ResetResponse> reset(ResetRequest resetRequest);
 
+  Future<GetTicketDetailsResponse> getTicketDetails();
+
 }

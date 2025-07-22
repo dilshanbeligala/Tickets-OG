@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import '../../../../core/services/service_barrel.dart';
 import '../../../../core/utils/app_images.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   DateTime? currentBackPressTime;
   bool canPopNow = false;
+  TokenService tokenService = injection();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Chamika',
+                            '${tokenService.getUser()?.firstName}',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
@@ -82,8 +84,6 @@ class HomePageState extends State<HomePage> {
                         _buildTotalStatsCard(75.0, 150, 120),
                         SizedBox(height: 2.h,),
                         _buildStatsGridView()
-
-
                       ],
                     )
                   ),
@@ -299,6 +299,4 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }

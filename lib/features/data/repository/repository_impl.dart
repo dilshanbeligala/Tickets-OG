@@ -92,5 +92,8 @@ class RepositoryImpl implements Repository {
         return response;
       });
 
+  @override
+  Future<Either<Failure, GetTicketDetailsResponse>> getTicketDetails() async => _safeApiCall(() => remoteDataSource!.getTicketDetails());
+
 
 }
