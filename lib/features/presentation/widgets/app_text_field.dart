@@ -64,9 +64,21 @@ class AppTextFieldState extends State<AppTextField> {
     }
   }
 
+  void toggleObscureText() {
+    setState(() {
+      obscureText = !obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    const borderColor = Color(0xFF221F1F);
+
+    OutlineInputBorder outlineBorder = OutlineInputBorder(
+      borderSide: const BorderSide(color: borderColor),
+      borderRadius: BorderRadius.circular(8),
+    );
 
     return Container(
       width: widget.width ?? size.width - 40,
@@ -78,76 +90,73 @@ class AppTextFieldState extends State<AppTextField> {
             widget.label,
             style: Theme.of(context).textTheme.labelSmall!.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFFf3def5),
+              color: borderColor,
             ),
           ),
           const SizedBox(height: 6),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                colors: [
-                   Colors.white,
-                   Colors.white,
-                ],
+          TextFormField(
+            enabled: widget.enable,
+            keyboardType: widget.keyboardType ?? TextInputType.text,
+            controller: widget.controller,
+            obscureText: obscureText,
+            inputFormatters: [
+              if (widget.onlyNumbers) FilteringTextInputFormatter.digitsOnly,
+            ],
+            onTapOutside: (event) {
+              if (widget.dismissOnTapOutside &&
+                  FocusScope.of(context).isFirstFocus) {
+                FocusScope.of(context).unfocus();
+              }
+            },
+            decoration: InputDecoration(
+              isDense: true,
+              errorText: widget.errorText,
+              errorStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                height: 1,
+                color: Colors.redAccent,
               ),
-            ),
-            padding: const EdgeInsets.all(2), // Padding for gradient effect
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: widget.fillColor ?? Colors.black, // Field background
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: TextFormField(
-                  enabled: widget.enable,
-                  keyboardType: widget.keyboardType ?? TextInputType.text,
-                  controller: widget.controller,
-                  obscureText: obscureText,
-                  inputFormatters: [
-                    if (widget.onlyNumbers) FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  onTapOutside: (event) {
-                    if (widget.dismissOnTapOutside && FocusScope.of(context).isFirstFocus) {
-                      FocusScope.of(context).unfocus();
-                    }
-                  },
-                  decoration: InputDecoration(
-                    isDense: true,
-                    errorText: widget.errorText,
-                    errorStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      height: 1,
-                      color: Colors.redAccent,
-                    ),
-                    hintText: widget.hintText,
-                    hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: widget.hintColor ?? Colors.white,
-                      fontWeight: FontWeight.w500,
-                      height: widget.lines == 1 ? 1.1 : 1.5,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: widget.lines != 1 ? 12 : 20,
-                      horizontal: 16,
-                    ),
-                    counterText: "",
-                    filled: widget.fillColor != null,
-                    fillColor: widget.fillColor,
-                    border: InputBorder.none, // Remove default borders
-                  ),
-                  maxLength: widget.maxLength,
-                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: !widget.enable
-                        ? (widget.textColor ?? Colors.grey)
-                        : (widget.textColor ?? Colors.white),
-                    fontWeight: FontWeight.w500,
-                    height: widget.lines == 1 ? 1.1 : 1.5,
-                  ),
-                  maxLines: widget.password ? 1 : widget.lines,
-                  validator: widget.validator,
-                ),
+              hintText: widget.hintText,
+              hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                color: widget.hintColor ?? Colors.grey,
+                fontWeight: FontWeight.w500,
+                height: widget.lines == 1 ? 1.1 : 1.5,
               ),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: widget.lines != 1 ? 12 : 20,
+                horizontal: 16,
+              ),
+              counterText: "",
+              filled: true,
+              fillColor: widget.fillColor ?? Colors.white,
+              border: outlineBorder,
+              enabledBorder: outlineBorder,
+              focusedBorder: outlineBorder,
+              disabledBorder: outlineBorder,
+              errorBorder: outlineBorder.copyWith(
+                borderSide: const BorderSide(color: Colors.redAccent),
+              ),
+              suffixIcon: widget.password
+                  ? IconButton(
+                icon: Icon(
+                  obscureText
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                  color: Colors.grey,
+                ),
+                onPressed: toggleObscureText,
+              )
+                  : widget.suffix,
             ),
+            maxLength: widget.maxLength,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: !widget.enable
+                  ? (widget.textColor ?? Colors.grey)
+                  : (widget.textColor ?? borderColor),
+              fontWeight: widget.bold ? FontWeight.bold : FontWeight.w500,
+              height: widget.lines == 1 ? 1.1 : 1.5,
+            ),
+            maxLines: widget.password ? 1 : widget.lines,
+            validator: widget.validator,
           ),
         ],
       ),

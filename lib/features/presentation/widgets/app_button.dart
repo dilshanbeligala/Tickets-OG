@@ -42,7 +42,7 @@ class AppButton extends StatelessWidget {
     final isDisabled = disable;
     final borderColor = isDisabled
         ? AppColors.neutralColor[300]!
-        : (gradientColors?.first ?? Colors.red);
+        : const Color(0xFFB81D24); // solid red border when outlined
 
     return BouncingWidget(
       duration: Duration(milliseconds: clickDuration ?? 100),
@@ -64,14 +64,11 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius ?? 8),
           border: isOutlined ? Border.all(color: borderColor, width: 1) : null,
           gradient: !isOutlined && !isDisabled
-              ? LinearGradient(
-            colors: gradientColors ??
-                [
-                   Colors.white,
-                   Colors.white,
-                  // const Color(0xfff2d2fd),
-
-                ],
+              ? const LinearGradient(
+            colors: [
+              Color(0xFFB81D24),
+              Color(0xFFB81D24),
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           )
@@ -84,8 +81,7 @@ class AppButton extends StatelessWidget {
           boxShadow: !isOutlined && !isDisabled
               ? [
             BoxShadow(
-              color: (gradientColors?.first ?? Colors.black12)
-                  .withOpacity(0.3),
+              color: const Color(0xFFB81D24).withAlpha(77),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -103,7 +99,7 @@ class AppButton extends StatelessWidget {
                 ? AppColors.neutralColor[300]
                 : isOutlined
                 ? borderColor
-                : Colors.black,
+                : Colors.white,
             fontWeight: fontWeight ?? FontWeight.w700,
             letterSpacing: 0.6,
             height: 1.4,

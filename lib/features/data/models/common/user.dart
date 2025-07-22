@@ -1,44 +1,69 @@
 class User {
-  String? email;
-  String? name;
-  String? role;
-  String? phoneNumber;
-  String? sId;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
+  final String? firstName;
+  final int? eventId;
+  final String? userStatus;
+  final String? userRoleStatus;
+  final int? userCredentialId;
+  final String? mobile;
+  final int? userDetailId;
+  final int? userRoleId;
+  final List<String>? userRole;
+  final String? email;
+  final String? sub;
+  final int? iat;
+  final int? exp;
 
-  User(
-      {this.email,
-        this.name,
-        this.role,
-        this.phoneNumber,
-        this.sId,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
+  User({
+    this.firstName,
+    this.eventId,
+    this.userStatus,
+    this.userRoleStatus,
+    this.userCredentialId,
+    this.mobile,
+    this.userDetailId,
+    this.userRoleId,
+    this.userRole,
+    this.email,
+    this.sub,
+    this.iat,
+    this.exp,
+  });
 
-  User.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    name = json['name'];
-    role = json['role'];
-    phoneNumber = json['phoneNumber'];
-    sId = json['_id'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      firstName: json['firstName'] as String?,
+      eventId: json['eventId'] as int?,
+      userStatus: json['userStatus'] as String?,
+      userRoleStatus: json['userRoleStatus'] as String?,
+      userCredentialId: json['userCredentialId'] as int?,
+      mobile: json['mobile'] as String?,
+      userDetailId: json['userDetailId'] as int?,
+      userRoleId: json['userRoleId'] as int?,
+      userRole: (json['userRole'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      email: json['email'] as String?,
+      sub: json['sub'] as String?,
+      iat: json['iat'] as int?,
+      exp: json['exp'] as int?,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['email'] = email;
-    data['name'] = name;
-    data['role'] = role;
-    data['phoneNumber'] = phoneNumber;
-    data['_id'] = sId;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['__v'] = iV;
-    return data;
+    return {
+      'firstName': firstName,
+      'eventId': eventId,
+      'userStatus': userStatus,
+      'userRoleStatus': userRoleStatus,
+      'userCredentialId': userCredentialId,
+      'mobile': mobile,
+      'userDetailId': userDetailId,
+      'userRoleId': userRoleId,
+      'userRole': userRole,
+      'email': email,
+      'sub': sub,
+      'iat': iat,
+      'exp': exp,
+    };
   }
 }
