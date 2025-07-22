@@ -1,28 +1,22 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 import 'package:sizer/sizer.dart';
+
 import 'package:tickets_og/features/presentation/views/main/base.dart';
-import 'package:tickets_og/features/presentation/views/main/home_view.dart';
 import 'core/services/dependency_injection.dart';
-import 'core/utils/locales/locales.dart';
 import 'core/utils/navigation_routes.dart';
 import 'core/utils/themes/theme_bloc.dart';
 import 'core/utils/themes/theme_event.dart';
 import 'core/utils/themes/theme_state.dart';
 import 'features/data/datasources/data_source_barrel.dart';
 import 'features/data/repository/repository_impl_barrel.dart';
-import 'features/presentation/views/auth/auth_barrel.dart';
-
 
 void main() async {
-  SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.dark,
   ));
-  // WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/.env");
   await setupLocator();
   runApp(
@@ -61,38 +55,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final FlutterLocalization localization = FlutterLocalization.instance;
-
   @override
   void initState() {
-    configureLocalization();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder(
       bloc: BlocProvider.of<ThemeBloc>(context),
       builder: (BuildContext context, ThemeState state) => MaterialApp(
         onGenerateRoute: Routes.generateRoute,
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
-        supportedLocales: localization.supportedLocales,
-        localizationsDelegates: localization.localizationsDelegates,
         theme: state.themeData,
-        home:  Base(),
+        home: Base(),
         routes: const {},
       ),
     );
-  }
-
-  void configureLocalization() {
-    localization.init(mapLocales: LOCALES, initLanguageCode: "en");
-    localization.onTranslatedLanguage = onTranslateLanguage;
-  }
-
-  void onTranslateLanguage(Locale? locale) {
-    setState(() {});
   }
 }

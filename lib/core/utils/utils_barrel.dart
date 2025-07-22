@@ -5,7 +5,6 @@ export 'enums.dart';
 export 'extension.dart';
 export 'navigation_routes.dart';
 export 'validator.dart';
-export 'locales/locales.dart';
 export 'themes/theme_state.dart';
 export 'themes/theme_event.dart';
 export 'themes/theme_bloc.dart';
