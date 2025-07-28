@@ -140,7 +140,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<GetTicketDetailsResponse> getTicketDetails()  async {
     try {
       final response = await apiHelper!.get(
-        getUrl(url: "getTicketDetail").toString(),
+        getUrl(url: "/getTicketDetail").toString(),
         headers: await authorizedHeader(),
       );
       return GetTicketDetailsResponse.fromJson(response);

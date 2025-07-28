@@ -1,19 +1,19 @@
 class GetTicketDetailsResponse {
-  String? success;
+  String? statusCode;
   String? message;
   TicketData? data;
 
-  GetTicketDetailsResponse({this.success, this.message, this.data});
+  GetTicketDetailsResponse({this.statusCode, this.message, this.data});
 
   GetTicketDetailsResponse.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
+    statusCode = json['statusCode'];
     message = json['message'];
     data = json['data'] != null ? TicketData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
+    data['statusCode'] = statusCode;
     data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
@@ -24,15 +24,8 @@ class GetTicketDetailsResponse {
 
 class TicketData {
   List<TicketDetailDTOList>? ticketDetailDTOList;
-  PurchaseTickets? purchaseTickets;
-  PurchaseTickets? onBordTicket;
-  PurchaseTickets? needToOnBordTicket;
 
-  TicketData(
-      {this.ticketDetailDTOList,
-        this.purchaseTickets,
-        this.onBordTicket,
-        this.needToOnBordTicket});
+  TicketData({this.ticketDetailDTOList});
 
   TicketData.fromJson(Map<String, dynamic> json) {
     if (json['ticketDetailDTOList'] != null) {
@@ -41,15 +34,6 @@ class TicketData {
         ticketDetailDTOList!.add(TicketDetailDTOList.fromJson(v));
       });
     }
-    purchaseTickets = json['purchaseTickets'] != null
-        ? PurchaseTickets.fromJson(json['purchaseTickets'])
-        : null;
-    onBordTicket = json['onBordTicket'] != null
-        ? PurchaseTickets.fromJson(json['onBordTicket'])
-        : null;
-    needToOnBordTicket = json['needToOnBordTicket'] != null
-        ? PurchaseTickets.fromJson(json['needToOnBordTicket'])
-        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -58,15 +42,6 @@ class TicketData {
       data['ticketDetailDTOList'] =
           ticketDetailDTOList!.map((v) => v.toJson()).toList();
     }
-    if (purchaseTickets != null) {
-      data['purchaseTickets'] = purchaseTickets!.toJson();
-    }
-    if (onBordTicket != null) {
-      data['onBordTicket'] = onBordTicket!.toJson();
-    }
-    if (needToOnBordTicket != null) {
-      data['needToOnBordTicket'] = needToOnBordTicket!.toJson();
-    }
     return data;
   }
 }
@@ -74,15 +49,26 @@ class TicketData {
 class TicketDetailDTOList {
   String? ticketType;
   int? numberOfTickets;
-  int? ticketPrice;
+  double? ticketPrice;
+  int? purchaseTickets;
+  int? onBordTicket;
+  int? needToOnBordTicket;
 
   TicketDetailDTOList(
-      {this.ticketType, this.numberOfTickets, this.ticketPrice});
+      {this.ticketType,
+        this.numberOfTickets,
+        this.ticketPrice,
+        this.purchaseTickets,
+        this.onBordTicket,
+        this.needToOnBordTicket});
 
   TicketDetailDTOList.fromJson(Map<String, dynamic> json) {
     ticketType = json['ticketType'];
     numberOfTickets = json['numberOfTickets'];
     ticketPrice = json['ticketPrice'];
+    purchaseTickets = json['purchaseTickets'];
+    onBordTicket = json['onBordTicket'];
+    needToOnBordTicket = json['needToOnBordTicket'];
   }
 
   Map<String, dynamic> toJson() {
@@ -90,25 +76,9 @@ class TicketDetailDTOList {
     data['ticketType'] = ticketType;
     data['numberOfTickets'] = numberOfTickets;
     data['ticketPrice'] = ticketPrice;
-    return data;
-  }
-}
-
-class PurchaseTickets {
-  int? vip;
-  int? normal;
-
-  PurchaseTickets({this.vip, this.normal});
-
-  PurchaseTickets.fromJson(Map<String, dynamic> json) {
-    vip = json['VIP'];
-    normal = json['NORMAL'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['VIP'] = vip;
-    data['NORMAL'] = normal;
+    data['purchaseTickets'] = purchaseTickets;
+    data['onBordTicket'] = onBordTicket;
+    data['needToOnBordTicket'] = needToOnBordTicket;
     return data;
   }
 }
