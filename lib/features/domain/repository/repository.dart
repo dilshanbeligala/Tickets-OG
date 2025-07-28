@@ -28,6 +28,6 @@ abstract class Repository {
 
   Future<Either<Failure, GetTicketDetailsResponse>> getTicketDetails();
 
-
+  Future<Either<Failure, ScanResponse>> qrScan(QrRequest qrRequest);
 }
 

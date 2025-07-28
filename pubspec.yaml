@@ -40,6 +40,9 @@ dependencies:
   glass: ^2.0.0+2
   syncfusion_flutter_gauges: ^24.2.7
   jwt_decoder: ^2.0.1
+  flutter_beep:
+    git:
+      url: https://github.com/trietho/flutter_beep.git
 
 
 

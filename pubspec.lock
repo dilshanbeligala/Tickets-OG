@@ -254,6 +254,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_beep:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "3b3f9b55b26c3d2c89216fbaf97dac5a35045e36"
+      url: "https://github.com/trietho/flutter_beep.git"
+    source: git
+    version: "1.1.0"
   flutter_bloc:
     dependency: "direct main"
     description:

@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../../../../core/services/service_barrel.dart';
+import '../../../../error/error_barrel.dart';
+import '../../../data/models/request/request_barrel.dart';
+import '../../../domain/usecases/usecase_barrel.dart';
 import '../base_view.dart';
 import 'scanner.dart';
 
@@ -14,7 +19,7 @@ class ScanPage extends BaseView {
 
 class ScanPageState extends BaseViewState<ScanPage>{
   final codeController = TextEditingController();
-  // CheckInUseCase checkInUseCase = injection();
+  ScanUseCase checkInUseCase = injection();
   Barcode? result;
   BarcodeCapture? capture;
   bool found = false;
@@ -27,42 +32,50 @@ class ScanPageState extends BaseViewState<ScanPage>{
       setState(() {
         result = barcode.barcodes.first;
         if(result != null){
-          // verify('${result?.displayValue!}');
+          verify('${result?.displayValue!}');
         }
       });
     }
   }
 
-  // verify(String code) async {
-  //   showProgressBar();
-  //   final apiResult = await checkInUseCase.call(Params([CheckInRequest(fitnessCenterId: code)]));
-  //   hideProgressBar();
-  //   apiResult.fold((l){
-  //     FlutterBeep.beep(false);
-  //     showAlertPage(
-  //         type: AlertType.WARNING,
-  //         title: 'Check-In',
-  //         message: '${ErrorHandler().mapFailureToTitleAndMessage(l)['message']}',
-  //         positiveBtnText: 'Re-scan',
-  //         onContinue: (){
-  //           Navigator.of(context, rootNavigator: true).pop();
-  //           found = false;
-  //         }
-  //     );
-  //   }, (r){
-  //     FlutterBeep.beep();
-  //     showAlertPage(
-  //         type: AlertType.SUCCESS,
-  //         title: 'Attendance Recorded!',
-  //         message: 'Your attendance has been successfully recorded, and the door is now unlocked. Welcome to the gym!',
-  //         onContinue: (){
-  //           Navigator.of(context, rootNavigator: true).pop();
-  //           found = false;
-  //           Base.staticGlobalKey.currentState!.changeTab(0);
-  //         }
-  //     );
-  //   });
-  // }
+
+  verify(String code) async {
+    showProgressBar();
+
+    final apiResult = await checkInUseCase.call(Params([QrRequest(qrData: code)]));
+    hideProgressBar();
+
+    apiResult.fold(
+          (failure) {
+        FlutterBeep.beep(false);
+        showAppDialog(
+          title: 'Check-In Failed',
+          message: ErrorHandler().mapFailureToTitleAndMessage(failure)['message'] ?? 'Something went wrong.',
+          onPositiveCallback: () {
+            setState(() {
+              found = false;
+              result = null;
+            });
+          },
+        );
+      },
+          (success) {
+        FlutterBeep.beep();
+        showAppDialog(
+          title: 'Success',
+          message: 'Your attendance has been recorded and the door is unlocked. Welcome to the gym!',
+          onPositiveCallback: () {
+            setState(() {
+              found = false;
+              result = null;
+            });
+          },
+        );
+      },
+    );
+  }
+
+
 
   @override
   void setState(fn) {

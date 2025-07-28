@@ -148,4 +148,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<ScanResponse> qrScan(
+      QrRequest qrRequest) async {
+    try {
+      final response = await apiHelper!.post(
+        getUrl(url: "/scanQR").toString(),
+        headers: await authorizedHeader(),
+        body: qrRequest.toJson(),
+      );
+      return ScanResponse.fromJson(response);
+    } on Exception {
+      rethrow;
+    }
+  }
 }

@@ -15,4 +15,6 @@ abstract class RemoteDataSource {
 
   Future<GetTicketDetailsResponse> getTicketDetails();
 
+  Future<ScanResponse> qrScan(QrRequest qrRequest);
+
 }
