@@ -59,7 +59,7 @@ class HistoryCard extends StatelessWidget {
           '${ticket.userName}',
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             fontWeight: FontWeight.w600,
-            color: Colors.white
+            color: Colors.grey
           ),
         ),
         Text(
@@ -79,7 +79,7 @@ class HistoryCard extends StatelessWidget {
       '4.34 PM',
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
-          color: Colors.white
+          color: Colors.grey
       ),
     );
   }
