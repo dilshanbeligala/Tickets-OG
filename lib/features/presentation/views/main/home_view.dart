@@ -358,6 +358,15 @@ class HomePageState extends BaseViewState<HomePage> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+                const SizedBox(height: 4),
+                Text(
+                  'Total: $total  |  Scanned: $scanned',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ],
             ),
           );
@@ -365,6 +374,7 @@ class HomePageState extends BaseViewState<HomePage> {
       ),
     );
   }
+
 
   Future<void> _fetchTicketDetails() async {
     setState(() {
