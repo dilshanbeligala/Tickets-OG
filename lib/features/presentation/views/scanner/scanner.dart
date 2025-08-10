@@ -118,7 +118,10 @@ class ScannerState extends State<Scanner>{
                       alignment: Alignment.center,
                       child: SvgPicture.asset(
                         AppImages.icFlasher,
-                        color: Colors.white,
+                        colorFilter: ColorFilter.mode(
+                          flashOn ? Colors.black : Colors.white,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ),
