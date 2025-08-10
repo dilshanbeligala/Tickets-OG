@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tickets_og/core/utils/utils_barrel.dart';
 import 'package:tickets_og/features/data/models/common/common_barrel.dart';
+import '../history/history_barrel.dart';
 import '../scanner/scanner_barrel.dart';
 import 'main_barrel.dart';
 
@@ -24,17 +25,15 @@ class BaseState extends State<Base> with TickerProviderStateMixin{
   int _previousPage = 0;
   // late FirebaseRemoteConfig _remoteConfig;
   // TokenService tokenService = injection();
-  late final AnimationController _controller;
   bool hideAnimation = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
     navData = [
       NavData(label: 'Home', basePage: const HomePage(), activeIcon: AppImages.icHome, inActiveIcon: AppImages.icHome),
       NavData(label: 'Scan', basePage: const ScanPage(), activeIcon: AppImages.icQr, inActiveIcon: AppImages.icQr),
-      NavData(label: 'Settings', basePage: const ScanPage(), activeIcon: AppImages.icHistory, inActiveIcon: AppImages.icHistory),
+      NavData(label: 'History', basePage: const HistoryPage(), activeIcon: AppImages.icHistory, inActiveIcon: AppImages.icHistory),
 
     ];
   }
@@ -53,7 +52,7 @@ class BaseState extends State<Base> with TickerProviderStateMixin{
           if(!(await navData[_currentPage].navKey.currentState!.maybePop())){
             if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
               currentBackPressTime = now;
-              Fluttertoast.showToast(msg: "Press again to exit");
+              // Fluttertoast.showToast(msg: "Press again to exit");
             }else{
               if(Platform.isAndroid){
                 SystemNavigator.pop();

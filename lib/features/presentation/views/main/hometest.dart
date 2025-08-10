@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -30,7 +30,7 @@ class HomePageState extends State<HomePage> {
             now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
           currentBackPressTime = now;
           setState(() => canPopNow = false);
-          Fluttertoast.showToast(msg: "Press back again to exit");
+          // Fluttertoast.showToast(msg: "Press back again to exit");
         } else {
           setState(() => canPopNow = true);
           WidgetsBinding.instance.addPostFrameCallback((_) => exit(0));

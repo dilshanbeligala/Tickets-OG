@@ -47,9 +47,9 @@ class ScanPageState extends BaseViewState<ScanPage>{
 
     apiResult.fold(
           (failure) {
-        FlutterBeep.beep(false);
+        FlutterBeep.beep();
         showAppDialog(
-          title: 'Check-In Failed',
+          title: 'Scan Failed',
           message: ErrorHandler().mapFailureToTitleAndMessage(failure)['message'] ?? 'Something went wrong.',
           onPositiveCallback: () {
             setState(() {
@@ -60,10 +60,13 @@ class ScanPageState extends BaseViewState<ScanPage>{
         );
       },
           (success) {
-        FlutterBeep.beep();
+            success.statusCode=="000023"?
+        FlutterBeep.beep():FlutterBeep.beep(false);
         showAppDialog(
-          title: 'Success',
-          message: 'Your attendance has been recorded and the door is unlocked. Welcome to the gym!',
+          messageColor:success.statusCode=="000022" ? Colors.green:Colors.red,
+          isAlertTypeEnable: true,
+          title: 'Successfully Scanned',
+          message: success.message,
           onPositiveCallback: () {
             setState(() {
               found = false;

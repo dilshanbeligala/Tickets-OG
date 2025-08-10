@@ -139,6 +139,7 @@ class AppDialog extends StatelessWidget {
                                 negativeButtonText != null
                                     ? Expanded(
                                   child: AppButton(
+                                    bgColor: const Color(0xFF221F1F),
                                     buttonText:
                                     positiveButtonText ?? "OK",
                                     onTapButton: () {
@@ -152,6 +153,7 @@ class AppDialog extends StatelessWidget {
                                 )
                                     : Expanded(
                                   child: AppButton(
+                                    bgColor: const Color(0xFF221F1F),
                                     buttonText:
                                     positiveButtonText ?? "OK",
                                     onTapButton: () {

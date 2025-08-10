@@ -7,3 +7,4 @@ export 'reset_response.dart';
 export 'get_ticket_details_response.dart';
 export 'rotate_token_response.dart';
 export 'qr_response.dart';
+export 'get_ticket_history.dart';

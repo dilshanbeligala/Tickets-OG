@@ -47,5 +47,6 @@ Future<void> setupLocator() async {
   injection.registerLazySingleton(() => LoginUseCase(repository: injection()));
   injection.registerLazySingleton(() => GetTicketDetailsUseCase(repository: injection()));
   injection.registerLazySingleton(() => ScanUseCase(repository: injection()));
+  injection.registerLazySingleton(() => GetTicketHistoryUseCase(repository: injection()));
 
 }

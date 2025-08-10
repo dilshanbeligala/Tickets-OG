@@ -150,6 +150,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
+  Future<GetTicketHistory> getTicketHistory()  async {
+    try {
+      final response = await apiHelper!.get(
+        getUrl(url: "/getQRDetails").toString(),
+        headers: await authorizedHeader(),
+      );
+      return GetTicketHistory.fromJson(response);
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
   Future<ScanResponse> qrScan(
       QrRequest qrRequest) async {
     try {

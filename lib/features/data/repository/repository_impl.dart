@@ -96,5 +96,8 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, GetTicketDetailsResponse>> getTicketDetails() async => _safeApiCall(() => remoteDataSource!.getTicketDetails());
 
   @override
+  Future<Either<Failure, GetTicketHistory>> getTicketHistory() async => _safeApiCall(() => remoteDataSource!.getTicketHistory());
+
+  @override
   Future<Either<Failure, ScanResponse>> qrScan(QrRequest qrRequest) async => _safeApiCall(() => remoteDataSource!.qrScan(qrRequest));
 }

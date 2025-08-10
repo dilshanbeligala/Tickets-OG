@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../core/services/service_barrel.dart';
 import '../../../../core/utils/app_images.dart';
+import '../../../../main.dart';
 import '../../../data/models/response/response_barrel.dart';
 import '../../../domain/usecases/usecase_barrel.dart';
+import '../auth/auth_barrel.dart';
 import '../base_view.dart';
 
 class HomePage extends BaseView {
@@ -72,9 +75,27 @@ class HomePageState extends BaseViewState<HomePage> {
                         ),
                       ),
                       const Spacer(),
-                      SvgPicture.asset(
-                        AppImages.icSettings,
-                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      InkWell(
+                        onTap: () {
+                          showAppDialog(
+                            title: 'Are you sure you want to log out?',
+                            positiveButtonText: 'Yes',
+                            negativeButtonText: 'No',
+                            onPositiveCallback: () async {
+                              Navigator.of(navigatorKey.currentContext!).pop();
+                              await tokenService.deleteToken();
+                              navigatorKey.currentState?.pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (_) => const LoginView()),
+                                    (route) => false,
+                              );
+                            },
+                            onNegativeCallback: () {},
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          AppImages.icLogOut,
+                          colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+                        ),
                       )
                     ],
                   ),
@@ -88,7 +109,7 @@ class HomePageState extends BaseViewState<HomePage> {
                       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                     ),
                     child: loading
-                        ? const Center(child: CircularProgressIndicator())
+                        ? _buildSkeletonLoader()
                         : Column(
                       children: [
                         _buildTotalStatsCard(progress, totalTickets, scannedTickets),
@@ -99,6 +120,54 @@ class HomePageState extends BaseViewState<HomePage> {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSkeletonLoader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Column(
+        children: [
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 300,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Expanded(
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 4,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                childAspectRatio: 1.2,
+              ),
+              itemBuilder: (context, index) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -120,7 +189,6 @@ class HomePageState extends BaseViewState<HomePage> {
               blurRadius: 8,
               offset: Offset(0, 4),
             ),
-
           ],
         ),
         padding: const EdgeInsets.all(16),
@@ -317,8 +385,8 @@ class HomePageState extends BaseViewState<HomePage> {
         int scanned = 0;
 
         for (final ticket in ticketList) {
-          total += ticket.purchaseTickets!;
-          scanned += ticket.onBordTicket!;
+          total += ticket.purchaseTickets ?? 0;
+          scanned += ticket.onBordTicket ?? 0;
         }
 
         setState(() {
@@ -331,6 +399,4 @@ class HomePageState extends BaseViewState<HomePage> {
       },
     );
   }
-
-
 }

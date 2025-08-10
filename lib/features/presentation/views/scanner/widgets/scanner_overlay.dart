@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/utils/utils_barrel.dart';
 
 class QRScannerOverlay extends StatelessWidget {
   final Color overlayColour;
+
   const QRScannerOverlay({super.key, required this.overlayColour});
 
   @override
@@ -12,45 +12,31 @@ class QRScannerOverlay extends StatelessWidget {
         ? size.width - 40
         : size.width * 0.7;
 
+    final scanRect = Rect.fromCenter(
+      center: Offset(size.width / 2, size.height * 0.22 + 50 + (size.height * 0.4) / 2),
+      width: scanArea,
+      height: size.height * 0.4,
+    );
+
     return Stack(
-      alignment: Alignment.center,
       children: [
-        ColorFiltered(
-          colorFilter: ColorFilter.mode(
-              overlayColour, BlendMode.srcOut), // Create the transparent hole
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  backgroundBlendMode: BlendMode.dstOut,
-                ),
-              ),
-              Positioned(
-                top: size.height * 0.22 + 50,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: size.height * 0.4,
-                    width: scanArea,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
-              )
-            ],
+        // Background overlay with a transparent hole
+        CustomPaint(
+          size: size,
+          painter: ScannerOverlayPainter(
+            scanRect: scanRect,
+            overlayColor: overlayColour,
           ),
         ),
+        // Border outline for scan area
         Positioned(
-          top: size.height * 0.22 + 56,
+          top: scanRect.top + 6,
+          left: scanRect.left + 6,
           child: CustomPaint(
             foregroundPainter: BorderPainter(),
             child: SizedBox(
-              height: size.height * 0.4 - 14,
-              width: scanArea - 14,
+              width: scanRect.width - 12,
+              height: scanRect.height - 12,
             ),
           ),
         ),
@@ -59,80 +45,76 @@ class QRScannerOverlay extends StatelessWidget {
   }
 }
 
-// ✅ Fixed BorderPainter
-class BorderPainter extends CustomPainter {
+class ScannerOverlayPainter extends CustomPainter {
+  final Rect scanRect;
+  final Color overlayColor;
+
+  ScannerOverlayPainter({
+    required this.scanRect,
+    required this.overlayColor,
+  });
+
   @override
   void paint(Canvas canvas, Size size) {
-    const width = 4.0;
-    const radius = 10.0;
-    const tRadius = 5 * radius;
+    final paint = Paint()..color = overlayColor;
 
-    final rect = Rect.fromLTWH(
-      width,
-      width,
-      size.width - 2 * width,
-      size.height - 2 * width,
-    );
+    // Full screen overlay path
+    final backgroundPath = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
 
-    final rrect = RRect.fromRectAndRadius(
-      rect,
-      const Radius.circular(radius),
-    );
+    // Transparent cut-out path
+    final holePath = Path()
+      ..addRRect(RRect.fromRectAndRadius(scanRect, const Radius.circular(14)))
+      ..close();
 
-    // Define corner clipping rectangles
-    const clippingRect0 = Rect.fromLTWH(0, 0, tRadius, tRadius);
-    final clippingRect1 = Rect.fromLTWH(
-        size.width - tRadius, 0, tRadius, tRadius);
-    final clippingRect2 = Rect.fromLTWH(
-        0, size.height - tRadius, tRadius, tRadius);
-    final clippingRect3 = Rect.fromLTWH(
-        size.width - tRadius, size.height - tRadius, tRadius, tRadius);
+    // Combine paths to cut the hole
+    final finalPath = Path.combine(PathOperation.difference, backgroundPath, holePath);
 
-    // Clip corners
-    final path = Path()
-      ..addRect(clippingRect0)
-      ..addRect(clippingRect1)
-      ..addRect(clippingRect2)
-      ..addRect(clippingRect3);
-
-    canvas.clipPath(path);
-
-    // ✅ Use specific color shade to avoid cast error
-    canvas.drawRRect(
-      rrect,
-      Paint()
-        ..color = AppColors.primaryColor[500]! // <-- FIXED
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = width,
-    );
+    canvas.drawPath(finalPath, paint);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-// Optional utility class
-class BarReaderSize {
-  static double width = 200;
-  static double height = 200;
-}
-
-// Optional overlay with a circular cutout
-class OverlayWithHolePainter extends CustomPainter {
+class BorderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.black54;
+    const double borderWidth = 4.0;
+    const double cornerRadius = 10.0;
+    const double clipPadding = 5 * cornerRadius;
 
-    canvas.drawPath(
-      Path.combine(
-        PathOperation.difference,
-        Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height)),
-        Path()
-          ..addOval(
-              Rect.fromCircle(center: Offset(size.width - 44, size.height - 44), radius: 40))
-          ..close(),
-      ),
-      paint,
+    final rect = Rect.fromLTWH(
+      borderWidth,
+      borderWidth,
+      size.width - 2 * borderWidth,
+      size.height - 2 * borderWidth,
+    );
+
+    final rrect = RRect.fromRectAndRadius(
+      rect,
+      const Radius.circular(cornerRadius),
+    );
+
+    final clippingRects = [
+      Rect.fromLTWH(0, 0, clipPadding, clipPadding),
+      Rect.fromLTWH(size.width - clipPadding, 0, clipPadding, clipPadding),
+      Rect.fromLTWH(0, size.height - clipPadding, clipPadding, clipPadding),
+      Rect.fromLTWH(size.width - clipPadding, size.height - clipPadding, clipPadding, clipPadding),
+    ];
+
+    final clipPath = Path();
+    for (final rect in clippingRects) {
+      clipPath.addRect(rect);
+    }
+    canvas.clipPath(clipPath);
+
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..color = Colors.white // 🔄 Use white or another visible color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = borderWidth,
     );
   }
 

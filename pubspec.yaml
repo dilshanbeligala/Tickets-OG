@@ -20,7 +20,7 @@ dependencies:
   get_it: ^7.6.7
   page_transition: ^2.1.0
 #  flutter_localization: ^0.2.0
-  fluttertoast: ^8.2.5
+#  fluttertoast: ^8.2.5
   firebase_messaging: ^14.8.2
   connectivity_plus: ^6.0.3
   equatable: ^2.0.5
@@ -43,6 +43,8 @@ dependencies:
   flutter_beep:
     git:
       url: https://github.com/trietho/flutter_beep.git
+  tap_debouncer: ^2.2.0
+  shimmer: ^3.0.0
 
 
 

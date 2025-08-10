@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sizer/sizer.dart';
 import '../../../core/utils/utils_barrel.dart';
 import '../../../error/error_barrel.dart';
 import '../widgets/widgets_barrel.dart';
@@ -26,6 +27,27 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
       child: Container(
         child: buildView(context),
       ),
+    );
+  }
+
+  Future openBottomSheet({required Widget page, double? maxHeight, Color? barrierColor}){
+    return showModalBottomSheet(
+      context: context,
+      enableDrag: true,
+      isDismissible: true,
+      useRootNavigator: true,
+      constraints: BoxConstraints(
+          maxHeight: maxHeight??90.h
+      ),
+      barrierColor: barrierColor??Color(0xFF0A0A0A).withValues(alpha: 0.8),
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+          child: page,
+        );
+      },
     );
   }
 

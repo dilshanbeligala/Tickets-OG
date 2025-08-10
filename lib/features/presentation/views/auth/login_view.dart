@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tickets_og/core/utils/app_images.dart';
@@ -53,7 +53,7 @@ class LoginViewState extends BaseViewState<LoginView>
       onPopInvokedWithResult: (bool didPop, result) {
         if (!didPop) {
           currentBackPressTime = DateTime.now();
-          Fluttertoast.showToast(msg: "");
+          // Fluttertoast.showToast(msg: "Press again to exit");
         }
       },
       child: Scaffold(

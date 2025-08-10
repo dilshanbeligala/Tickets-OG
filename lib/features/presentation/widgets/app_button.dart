@@ -1,18 +1,22 @@
-import 'package:bouncing_widget/bouncing_widget.dart';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
+import 'package:tap_debouncer/tap_debouncer.dart';
+
 
 import '../../../core/utils/utils_barrel.dart';
 
 class AppButton extends StatelessWidget {
   final String buttonText;
   final void Function() onTapButton;
-  final List<Color>? gradientColors;
-  final Color textColor;
+  final Color bgColor;
+  final Color? textColor;
   final double? width;
+  final double? height;
   final double? radius;
   final EdgeInsets? padding;
   final double? fontSize;
-  final FontWeight? fontWeight;
   final bool disable;
   final bool outLined;
   final int? clickDuration;
@@ -22,90 +26,63 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.buttonText,
     required this.onTapButton,
-    this.gradientColors,
-    this.textColor = Colors.white,
+    this.bgColor = const Color(0xFFB81D24),
+    this.textColor,
     this.width,
+    this.height,
     this.padding,
     this.fontSize,
     this.disable = false,
     this.outLined = false,
     this.clickDuration,
     this.radius,
-    this.fontWeight,
     this.verticalPadding,
   });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final isOutlined = outLined;
-    final isDisabled = disable;
-    final borderColor = isDisabled
-        ? AppColors.neutralColor[300]!
-        : const Color(0xFFB81D24); // solid red border when outlined
-
-    return BouncingWidget(
-      duration: Duration(milliseconds: clickDuration ?? 100),
-      scaleFactor: 0.5,
-      onPressed: () {
-        if (FocusScope.of(context).isFirstFocus) {
-          FocusScope.of(context).unfocus();
-        }
-        if (!disable) {
-          onTapButton();
-        }
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        width: width ?? (padding == null ? size.width - 40 : null),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius ?? 8),
-          border: isOutlined ? Border.all(color: borderColor, width: 1) : null,
-          gradient: !isOutlined && !isDisabled
-              ? const LinearGradient(
-            colors: [
-              Color(0xFFB81D24),
-              Color(0xFFB81D24),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )
-              : null,
-          color: isOutlined
-              ? Colors.white
-              : isDisabled
-              ? AppColors.neutralColor[100]
-              : null,
-          boxShadow: !isOutlined && !isDisabled
-              ? [
-            BoxShadow(
-              color: const Color(0xFFB81D24).withAlpha(77),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+    return TapDebouncer(
+        onTap: () async{
+          if (FocusScope.of(context).isFirstFocus) {
+            FocusScope.of(context).unfocus();
+          }
+          if (!disable) {
+            onTapButton();
+          }
+        },
+        cooldown: const Duration(seconds: 1),
+        builder: (context, TapDebouncerFunc? onTap){
+          return GestureDetector(
+            onTap: onTap,
+            child: Container(
+              width: width ?? (padding?.horizontal == null ? size.width - 40: null),
+              height:height ,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(radius ?? 8)),
+                border: Border.all(
+                    color: disable ? AppColors.neutralColor[300]! : bgColor,
+                    width: 1
+                ),
+                color: outLined ? Colors.transparent : disable ? AppColors.primaryColor[500]!.withValues(alpha: 0.5) : bgColor,
+              ),
+              padding: padding ?? EdgeInsets.only(bottom: verticalPadding ?? 1.8.h, top: (verticalPadding ?? 1.8.h) - 1),
+              child: Text(
+                buttonText,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.montserrat(
+                  textStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w700,
+                    color: textColor ?? (disable ? Colors.white : outLined ? bgColor : Colors.white),
+                    height: 1.25,
+                  ),
+                ),
+              ),
             ),
-          ]
-              : null,
-        ),
-        padding:
-        padding ?? EdgeInsets.symmetric(vertical: verticalPadding ?? 18),
-        child: Text(
-          buttonText,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            fontSize: fontSize,
-            color: isDisabled
-                ? AppColors.neutralColor[300]
-                : isOutlined
-                ? borderColor
-                : Colors.white,
-            fontWeight: fontWeight ?? FontWeight.w700,
-            letterSpacing: 0.6,
-            height: 1.4,
-          ),
-        ),
-      ),
+          );
+        }
     );
   }
 }

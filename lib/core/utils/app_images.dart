@@ -9,6 +9,8 @@ class AppImages {
   static const icHistory = "assets/icons/history.svg";
   static const icSettings = "assets/icons/settings-sliders.svg";
   static const icFlasher = "assets/icons/flashlight.svg";
+  static const icLogOut = "assets/images/svg/logout.svg";
+  static const icCloseCircle = "assets/images/svg/circle-close.svg";
 
 
   //png
