@@ -11,6 +11,7 @@ class AppImages {
   static const icFlasher = "assets/icons/flashlight.svg";
   static const icLogOut = "assets/images/svg/logout.svg";
   static const icCloseCircle = "assets/images/svg/circle-close.svg";
+  static const icClose = "assets/images/svg/close.svg";
 
 
   //png

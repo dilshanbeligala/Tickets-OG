@@ -48,15 +48,15 @@ class HistoryPageState extends BaseViewState<HistoryPage> {
     } else {
       setState(() {
         filteredHistory = history.where((ticket) {
-          final nameMatch = ticket.eventName?.toLowerCase().contains(query) ?? false;
-          // final idMatch = ticket.ticketId?.toLowerCase().contains(query) ?? false;
-          return nameMatch
-              // || idMatch
-          ;
+          final nameMatch = ticket.userName?.toLowerCase().contains(query) ?? false;
+          final ticketIdMatch = ticket.ticketId?.toLowerCase().contains(query) ?? false;
+          final verifyIdMatch = ticket.verifyId?.toLowerCase().contains(query) ?? false;
+          return nameMatch || ticketIdMatch || verifyIdMatch;
         }).toList();
       });
     }
   }
+
 
   @override
   Widget buildView(BuildContext context) {
@@ -93,7 +93,7 @@ class HistoryPageState extends BaseViewState<HistoryPage> {
         style: const TextStyle(color: Colors.black),
         cursorColor: Colors.black,
         decoration: InputDecoration(
-          hintText: 'Search by name or ticket ID',
+          hintText: 'Search by Name , Ticket ID or Verify ID ',
           hintStyle: TextStyle(color: Colors.grey[600]),
           prefixIcon: const Icon(Icons.search, color: Colors.black),
           border: OutlineInputBorder(
@@ -235,7 +235,16 @@ class HistoryPageState extends BaseViewState<HistoryPage> {
 
   Widget _itemBuilder(BuildContext context, TicketDetails ticket) {
     return HistoryCard(
+      onCardClick: () {
+        showTicketHistorySheet(ticket);
+      },
       ticket: ticket,
     );
+  }
+
+  void showTicketHistorySheet(TicketDetails ticket) {
+    openBottomSheet(page: BookingDetailsSheet(
+      ticket: ticket,
+    ));
   }
 }
