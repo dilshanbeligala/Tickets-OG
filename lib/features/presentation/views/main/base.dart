@@ -5,11 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tickets_og/core/utils/utils_barrel.dart';
 import 'package:tickets_og/features/data/models/common/common_barrel.dart';
+import 'package:tickets_og/features/presentation/views/base_view.dart';
 import '../history/history_barrel.dart';
 import '../scanner/scanner_barrel.dart';
 import 'main_barrel.dart';
 
-class Base extends StatefulWidget {
+class Base extends BaseView {
   static final GlobalKey<BaseState> staticGlobalKey = GlobalKey<BaseState>();
   Base({Key? key}) : super(key: Base.staticGlobalKey);
 
@@ -17,14 +18,12 @@ class Base extends StatefulWidget {
   State<Base> createState() => BaseState();
 }
 
-class BaseState extends State<Base> with TickerProviderStateMixin{
+class BaseState extends BaseViewState<Base> with TickerProviderStateMixin{
   DateTime? currentBackPressTime;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentPage = 0;
   late List<NavData> navData = [];
   int _previousPage = 0;
-  // late FirebaseRemoteConfig _remoteConfig;
-  // TokenService tokenService = injection();
   bool hideAnimation = false;
 
   @override
@@ -39,7 +38,7 @@ class BaseState extends State<Base> with TickerProviderStateMixin{
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildView(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (canPop, reason) async{
@@ -52,7 +51,20 @@ class BaseState extends State<Base> with TickerProviderStateMixin{
           if(!(await navData[_currentPage].navKey.currentState!.maybePop())){
             if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
               currentBackPressTime = now;
-              // Fluttertoast.showToast(msg: "Press again to exit");
+              showAppDialog(
+                title: 'Exit App',
+                message: 'Are you sure you want to exit?',
+                positiveButtonText: 'Yes',
+                negativeButtonText: 'No',
+                onPositiveCallback: () {
+                  if (Platform.isAndroid) {
+                    SystemNavigator.pop();
+                  } else {
+                    exit(0);
+                  }
+                },
+                onNegativeCallback: () {},
+              );
             }else{
               if(Platform.isAndroid){
                 SystemNavigator.pop();
