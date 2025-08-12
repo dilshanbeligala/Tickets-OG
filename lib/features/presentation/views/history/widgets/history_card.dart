@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../data/models/response/response_barrel.dart';
@@ -73,25 +74,56 @@ class HistoryCard extends StatelessWidget {
     );
   }
 
+
   Widget _buildTime(BuildContext context) {
-    return Text(
-      // '${ticket.userName}',
-      '4.34 PM',
-      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+    if (ticket.scanDate == null || ticket.scanDate!.isEmpty ||
+        ticket.scanTime == null || ticket.scanTime!.isEmpty) {
+      return const SizedBox();
+    }
+
+    try {
+      final dateTimeString = '${ticket.scanDate} ${ticket.scanTime}';
+      final parsedDateTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTimeString);
+      final formattedTime = DateFormat('hh:mm a').format(parsedDateTime);
+      return Text(
+        formattedTime,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
-          color: Colors.grey
-      ),
-    );
+          color: Colors.grey,
+        ),
+      );
+    } catch (e) {
+      return Text(
+        ticket.scanTime ?? '',
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: Colors.grey,
+        ),
+      );
+    }
   }
 
+
+
   Widget _buildID(BuildContext context) {
-    return Text(
-      // '${ticket.userName}',
-      '144255624VIP',
-      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-          color: Colors.white
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Ticket ID: ${ticket.ticketId}',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Colors.white
+          ),
+        ),
+        Text(
+          'Verify ID: ${ticket.verifyId}',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Colors.white
+          ),
+        ),
+      ],
     );
   }
 

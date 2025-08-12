@@ -43,7 +43,7 @@ class HomePageState extends BaseViewState<HomePage> {
       body: Stack(
         children: [
           SizedBox(
-            height: 16.h,
+            height: 18.h,
             width: double.infinity,
             child: SvgPicture.asset(
               AppImages.icHomeBg,
@@ -57,46 +57,58 @@ class HomePageState extends BaseViewState<HomePage> {
                 SizedBox(height: 2.h),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome',
+                        tokenService.getUser()?.eventName ?? '',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: const Color(0xFFFF2C37),
+                          color:  Colors.white,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        tokenService.getUser()?.firstName ?? '',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          showAppDialog(
-                            title: 'Are you sure you want to log out?',
-                            positiveButtonText: 'Yes',
-                            negativeButtonText: 'No',
-                            onPositiveCallback: () async {
-                              Navigator.of(navigatorKey.currentContext!).pop();
-                              await tokenService.deleteToken();
-                              navigatorKey.currentState?.pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (_) => const LoginView()),
-                                    (route) => false,
+                      Row(
+                        children: [
+                          Text(
+                            'Welcome',
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: const Color(0xFFFF2C37),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            tokenService.getUser()?.firstName ?? '',
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              showAppDialog(
+                                title: 'Are you sure you want to log out?',
+                                positiveButtonText: 'Yes',
+                                negativeButtonText: 'No',
+                                onPositiveCallback: () async {
+                                  Navigator.of(navigatorKey.currentContext!).pop();
+                                  await tokenService.deleteToken();
+                                  navigatorKey.currentState?.pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (_) => const LoginView()),
+                                        (route) => false,
+                                  );
+                                },
+                                onNegativeCallback: () {},
                               );
                             },
-                            onNegativeCallback: () {},
-                          );
-                        },
-                        child: SvgPicture.asset(
-                          AppImages.icLogOut,
-                          colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
-                        ),
-                      )
+                            child: SvgPicture.asset(
+                              AppImages.icLogOut,
+                              colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),

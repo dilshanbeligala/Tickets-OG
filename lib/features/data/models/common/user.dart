@@ -1,5 +1,6 @@
 class User {
   final String? firstName;
+  final String? eventName;
   final int? eventId;
   final String? userStatus;
   final String? userRoleStatus;
@@ -15,6 +16,7 @@ class User {
 
   User({
     this.firstName,
+    this.eventName,
     this.eventId,
     this.userStatus,
     this.userRoleStatus,
@@ -32,6 +34,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       firstName: json['firstName'] as String?,
+      eventName: json['eventName'] as String?,
       eventId: json['eventId'] as int?,
       userStatus: json['userStatus'] as String?,
       userRoleStatus: json['userRoleStatus'] as String?,
@@ -52,6 +55,7 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       'firstName': firstName,
+      'eventName': eventName,
       'eventId': eventId,
       'userStatus': userStatus,
       'userRoleStatus': userRoleStatus,
