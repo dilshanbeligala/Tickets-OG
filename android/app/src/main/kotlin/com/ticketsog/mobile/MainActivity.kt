@@ -1,4 +1,4 @@
-package com.ticketsog.ticketsog
+package com.ticketsog.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 

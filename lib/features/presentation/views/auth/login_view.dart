@@ -48,7 +48,7 @@ class LoginViewState extends BaseViewState<LoginView>
   Widget buildView(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFfcfaef),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
